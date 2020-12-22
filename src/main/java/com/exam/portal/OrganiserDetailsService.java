@@ -9,7 +9,7 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import com.exam.portal.Model.Organiser;
 import com.exam.portal.Repository.OrganiserRepository;
 
-public class CustomOrganiserService implements UserDetailsService {
+public class OrganiserDetailsService implements UserDetailsService {
 
 	@Autowired
 	OrganiserRepository repo;
@@ -22,6 +22,6 @@ public class CustomOrganiserService implements UserDetailsService {
 			throw new UsernameNotFoundException("User not found");
 		}
 		
-		return new CustomOrganiserDetails(org);
+		return new OrganiserDetails(org);
 	}
 }

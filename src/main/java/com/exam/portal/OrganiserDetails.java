@@ -7,9 +7,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.exam.portal.Model.Organiser;
 
-public class CustomOrganiserDetails implements UserDetails {
+public class OrganiserDetails implements UserDetails {
 
-	public CustomOrganiserDetails(Organiser org ) {
+	public OrganiserDetails(Organiser org ) {
 		this.org = org;
 	}
 

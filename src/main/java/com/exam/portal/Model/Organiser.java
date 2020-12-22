@@ -46,7 +46,7 @@ public class Organiser {
 	@Column(nullable=false,length=50)
 	private String name;
 	
-	@Column(nullable=false,length=50)
+	@Column(nullable=false,length=250)
 	private String password;
 
 }
