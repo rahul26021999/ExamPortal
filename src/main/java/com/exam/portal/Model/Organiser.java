@@ -1,10 +1,13 @@
 package com.exam.portal.Model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -48,5 +51,13 @@ public class Organiser {
 	
 	@Column(nullable=false,length=250)
 	private String password;
+	
+	
+	/*
+	 * organiser Id is the foreign key in the exam paper
+	 */
+	@OneToOne(mappedBy="organisers", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Exam exams;
+	
 
 }
