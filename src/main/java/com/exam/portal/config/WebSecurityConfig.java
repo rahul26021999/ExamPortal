@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.exam.portal.OrganiserDetailsService;
 
@@ -62,8 +63,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					.passwordParameter("password")
 					.loginProcessingUrl("/organiser/login")
 					.defaultSuccessUrl("/organiser/dashboard")
-					
-				.permitAll();
+					.permitAll();
+//				.and()
+//				.logout().logoutRequestMatcher(new AntPathRequestMatcher("/organiser/logut")).logoutSuccessUrl("/organiser/login")
+//				.permitAll();
 	}
 	
 }

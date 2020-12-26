@@ -28,17 +28,12 @@ public class OrganiserController {
 		String encodedPassword=encoder.encode(org.getPassword());
 		org.setPassword(encodedPassword);
 		repo.save(org);
-		return "organiser/dashboard";
+		return "redirect:organiser/dashboard";
 	}
 	
 	@GetMapping("organiser/login")
 	public String login() {
 		return "organiser/login";
-	}
-	
-	@PostMapping("organiser/login")
-	public String loginPost() {
-		return "organiser/dashboard";
 	}
 	
 	@GetMapping("organiser/dashboard")
