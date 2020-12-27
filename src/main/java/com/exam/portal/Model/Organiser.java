@@ -7,8 +7,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.mapping.Set;
 
 @Entity
 @Table(name = "organisers")
@@ -56,8 +59,8 @@ public class Organiser {
 	/*
 	 * organiser Id is the foreign key in the exam paper
 	 */
-	@OneToOne(mappedBy="organisers", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Exam exams;
+	@OneToMany(mappedBy="organisers", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Set<Exam> exams;
 	
 
 }

@@ -10,34 +10,29 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
-import com.exam.portal.Model.Exam;
-import com.exam.portal.Model.Question;
-import com.exam.portal.Repository.QuestionRepository;
+import com.exam.portal.Model.Option;
+import com.exam.portal.Repository.OptionRepository;
+
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @Rollback(false)
-public class QuestionRepositoryTest {
+public class OptionRepositorytest {
 
-	
 	@Autowired
-	private QuestionRepository repo;
+	private OptionRepository repo;
 	
 	@Autowired
 	private TestEntityManager entityManager;
 	
 	@Test
-	public void testCreateQuestion()
-	{
-		Question question= new Question();
+	public void testCreateUser() {
+		Option option=new Option();
 		
-		question.setStatement("find the area of rectangle having length= 5 and breadth= 4");
+		Option savedOption=repo.save(option);
+		Option existOption=entityManager.find(Option.class,savedOption.getId());
 		
-		
-		Question savedQuestion= repo.save(question);
-		Question existQuestion= entityManager.find(Question.class, savedQuestion.getId());
-		
-		assertThat(existQuestion.getId()).isEqualTo(question.getId());
+		assertThat(existOption.getId()).isEqualTo(option.getId());
 		
 	}
 }

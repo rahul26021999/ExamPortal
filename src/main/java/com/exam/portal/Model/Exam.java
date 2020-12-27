@@ -8,8 +8,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.mapping.Set;
 
 @Entity
 @Table(name = "exams")
@@ -40,18 +44,19 @@ public class Exam {
 	
 	/*
 	 * foreign key
-	 * Exam paper will be given by one organiser
+	 * many Exam paper will be given by one organiser
 	 */
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name= "organiser_id")
+	@ManyToOne
+	@JoinColumn(name= "organiser_id", nullable= false)
 	private Organiser organisers;
 	
 	
 	/*
 	 * exam id is the foreign key in the question table
+	 * one exam will contain many questions.
 	 */
-	@OneToOne(mappedBy="exams", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Question questions;
+	@OneToMany(mappedBy="exams", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Set<Question> questions;
 	
 
 
