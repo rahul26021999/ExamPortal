@@ -11,27 +11,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ExamController {
 
     @GetMapping("/organiser/exams")
-    public String showExams(){
+    public String showExams(Model model){
+        // Give me a list of exams created by logged in User
         return "organiser/exam/list";
     }
 
     @GetMapping("/organiser/exams/create")
-    public String showCreateExam(@RequestParam(name = "step",defaultValue ="1") String step,Model model){
-        model.addAttribute("step",step);
+    public String showCreateExam(Model model){
+        //return empty exam model
         return "organiser/exam/create";
     }
 
     @PostMapping("/organiser/exams/create")
-    public String createExam(){
-//        create exam functionality here
+    public String createExam(Exam exam){
+        // create exam functionality here get model and save exam model
         return "redirect:/organiser/exams";
     }
 
     @GetMapping("/organiser/exams/view")
     public String viewExam(@RequestParam(name = "id",required = true ) String id,Model model){
-        // get exam from id and pass here
-        Exam exam=new Exam();// get exam from id here
-        model.addAttribute("exam",exam);
+        // get exam from id and pass to view
         return "organiser/exam/view";
     }
 }
