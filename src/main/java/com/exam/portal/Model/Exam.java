@@ -1,5 +1,8 @@
 package com.exam.portal.Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,10 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.hibernate.mapping.Set;
 
 @Entity
 @Table(name = "exams")
@@ -56,7 +56,7 @@ public class Exam {
 	 * one exam will contain many questions.
 	 */
 	@OneToMany(mappedBy="exams", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Set<Question> questions;
+	private List<Question> questions= new ArrayList<Question>();
 	
 
 
