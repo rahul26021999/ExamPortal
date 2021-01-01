@@ -28,7 +28,7 @@ public class OrganiserController {
 		String encodedPassword=encoder.encode(org.getPassword());
 		org.setPassword(encodedPassword);
 		repo.save(org);
-		return "redirect:organiser/dashboard";
+		return "redirect:/organiser/dashboard";
 	}
 	
 	@GetMapping("organiser/login")

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Organiser | Dashboard </title>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="/webjars/AdminLTE/3.0.0/plugins/fontawesome-free/css/all.min.css">
+    <!-- IonIcons -->
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/webjars/AdminLTE/3.0.0/dist/css/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+
+    <div th:replace="organiser/fragments/navbar :: header"></div>
+    <div th:replace="organiser/fragments/sidenav :: mySidebar"></div>
+
+    <div class="content-wrapper">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Create a new exam</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Exam</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card card-primary">
+                    <form action="" method="post">
+                        <div class="card-body">
+
+                                <div class="row">
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Exam Title</label>
+                                            <input type="text" class="form-control" placeholder="Enter ...">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Exam Description</label>
+                                            <input type="text" class="form-control" placeholder="Enter ...">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Exam Instructions</label>
+                                            <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label>Marks of each Question</label>
+                                            <input type="number" class="form-control" placeholder="" value="1">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Negative Marks of each Question</label>
+                                            <input type="number" class="form-control" placeholder="" value="-1">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Time for each Questions (Minutes)</label>
+                                            <input type="number" class="form-control" placeholder="In minutes" value="10">
+                                        </div>
+                                    </div>
+
+                                </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </div>
+                    </form>
+
+<!--                            <div th:case="3" class="row">-->
+<!--                                <div class="form-group">-->
+<!--                                    <label for="usersList">UserList</label>-->
+<!--                                    <div class="input-group">-->
+<!--                                        <div class="custom-file">-->
+<!--                                            <input type="file" class="custom-file-input" id="usersList">-->
+<!--                                            <label class="custom-file-label" for="usersList">Choose file</label>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                        </div>
+            </div>
+        </section>
+    </div>
+    <div th:replace="organiser/fragments/navbar :: footer"></div>
+
+
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+
+<!-- jQuery -->
+<script src="/webjars/AdminLTE/3.0.0/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="/webjars/AdminLTE/3.0.0/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE -->
+<script src="/webjars/AdminLTE/3.0.0/dist/js/adminlte.js"></script>
+
+<!-- OPTIONAL SCRIPTS -->
+<script src="/webjars/AdminLTE/3.0.0/plugins/chart.js/Chart.min.js"></script>
+<script src="/webjars/AdminLTE/3.0.0/dist/js/demo.js"></script>
+<script src="/webjars/AdminLTE/3.0.0/dist/js/pages/dashboard3.js"></script>
+</body>
+</html>
