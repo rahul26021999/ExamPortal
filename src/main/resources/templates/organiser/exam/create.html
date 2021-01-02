@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="/webjars/AdminLTE/3.0.0/plugins/fontawesome-free/css/all.min.css">
     <!-- IonIcons -->
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bbootstrap 4 -->
+    <link rel="stylesheet" href="/webjars/AdminLTE/3.0.0/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="/webjars/AdminLTE/3.0.0/dist/css/adminlte.min.css">
     <!-- Google Font: Source Sans Pro -->
@@ -43,41 +45,50 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="card card-primary">
-                    <form action="" method="post">
+                    <form th:action="@{/organiser/exams/create}" method="post" th:object="${exam}">
                         <div class="card-body">
+                            <div class="row">
 
-                                <div class="row">
-
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Exam Title</label>
-                                            <input type="text" class="form-control" placeholder="Enter ...">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Exam Description</label>
-                                            <input type="text" class="form-control" placeholder="Enter ...">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Exam Instructions</label>
-                                            <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
-                                        </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Exam Title</label>
+                                        <input type="text" class="form-control" th:field="*{title}" placeholder="Enter ...">
                                     </div>
-                                    <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <label>Marks of each Question</label>
-                                            <input type="number" class="form-control" placeholder="" value="1">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Negative Marks of each Question</label>
-                                            <input type="number" class="form-control" placeholder="" value="-1">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Time for each Questions (Minutes)</label>
-                                            <input type="number" class="form-control" placeholder="In minutes" value="10">
+                                    <div class="form-group">
+                                        <label>Exam Description</label>
+                                        <input type="text" class="form-control" th:field="*{description}" placeholder="Enter ...">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Exam Instructions</label>
+                                        <textarea class="form-control" rows="3" th:field="*{instructions}" placeholder="Enter ..."></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Marks (Per Question)</label>
+                                        <input type="number" class="form-control" th:field="*{marksOfEachQuestion}" placeholder="" value="1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Negative Marks (Per Question)</label>
+                                        <input type="number" class="form-control" th:field="*{negativeMarkOfEachQuestion}" placeholder="" value="-1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Exam Time</label>
+                                        <input type="number" class="form-control" th:field="*{examTime}" placeholder="In minutes" value="10">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="date">Date:</label>
+                                        <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                                            <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"
+                                                   th:field="*{startDate}" id="date" placeholder="Date"/>
+                                            <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
+                                            </div>
                                         </div>
                                     </div>
 
                                 </div>
+                            </div>
                         </div>
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary">Create</button>
@@ -111,12 +122,34 @@
 <script src="/webjars/AdminLTE/3.0.0/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap -->
 <script src="/webjars/AdminLTE/3.0.0/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE -->
-<script src="/webjars/AdminLTE/3.0.0/dist/js/adminlte.js"></script>
 
-<!-- OPTIONAL SCRIPTS -->
-<script src="/webjars/AdminLTE/3.0.0/plugins/chart.js/Chart.min.js"></script>
+<!-- InputMask -->
+<script src="/webjars/AdminLTE/3.0.0/plugins/moment/moment.min.js"></script>
+<script src="/webjars/AdminLTE/3.0.0/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="/webjars/AdminLTE/3.0.0/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/webjars/AdminLTE/3.0.0/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
 <script src="/webjars/AdminLTE/3.0.0/dist/js/demo.js"></script>
-<script src="/webjars/AdminLTE/3.0.0/dist/js/pages/dashboard3.js"></script>
+<script>
+    $.fn.datetimepicker.Constructor.Default = $.extend({}, $.fn.datetimepicker.Constructor.Default, {
+        icons: {
+            time: 'far fa-clock',
+            date: 'far fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-chevron-left',
+            next: 'fas fa-chevron-right',
+            today: 'far fa-calendar-check-o',
+            clear: 'far fa-trash',
+            close: 'far fa-times'
+        } });
+
+    $('#datetimepicker1').datetimepicker({
+        format: 'DD/MM/YYYY h:mm A'
+    });
+</script>
 </body>
 </html>

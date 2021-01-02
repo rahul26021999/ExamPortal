@@ -59,8 +59,11 @@ public class Organiser {
 	/*
 	 * organiser Id is the foreign key in the exam paper
 	 */
-	@OneToMany(mappedBy="organisers", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy="organisers", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Exam> exams= new ArrayList<Exam>();
-	
 
+
+	public List<Exam> getExams() {
+		return exams;
+	}
 }

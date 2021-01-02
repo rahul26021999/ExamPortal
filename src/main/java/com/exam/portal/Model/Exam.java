@@ -1,6 +1,10 @@
 package com.exam.portal.Model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -23,22 +27,26 @@ public class Exam {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(nullable=false,length=50)
+	@Column(nullable=false,length=50,name = "title")
 	private String title;
 	
-	@Column(length=100)
+	@Column(length=100 ,name = "description")
 	private String description;
 	
-	@Column(length=150)
+	@Column(length=150,name = "instructions")
 	private String	instructions;
+
+	@DateTimeFormat(pattern = "dd/MM/yyyy h:mm a")
+	@Column(nullable = false,name = "start_date")
+	private Date startDate;
 	
-	@Column(nullable=false,length=5)
+	@Column(nullable=false,length=5,name = "marks")
 	private int marksOfEachQuestion ;
 	
-	@Column(nullable=false,length=5)
-	private int timeOfEachQuestion;
+	@Column(nullable=false,length=5,name = "time")
+	private int examTime;
 	
-	@Column(length=5)
+	@Column(length=5,name = "negative_marks",nullable = true)
 	private int negativeMarkOfEachQuestion;
 	
 	
@@ -100,12 +108,12 @@ public class Exam {
 		this.marksOfEachQuestion = marksOfEachQuestion;
 	}
 
-	public int getTimeOfEachQuestion() {
-		return timeOfEachQuestion;
+	public int getExamTime() {
+		return examTime;
 	}
 
-	public void setTimeOfEachQuestion(int timeOfEachQuestion) {
-		this.timeOfEachQuestion = timeOfEachQuestion;
+	public void setExamTime(int timeOfEachQuestion) {
+		this.examTime = timeOfEachQuestion;
 	}
 
 	public int getNegativeMarkOfEachQuestion() {
@@ -123,7 +131,12 @@ public class Exam {
 	public void setOrganisers(Organiser organisers) {
 		this.organisers = organisers;
 	}
-	
-	
 
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
 }

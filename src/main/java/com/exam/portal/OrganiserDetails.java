@@ -13,11 +13,16 @@ public class OrganiserDetails implements UserDetails {
 		this.org = org;
 	}
 
+	public Organiser getOrg() {
+		return org;
+	}
+
 	private Organiser org;
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return null;
 	}
+
 
 	@Override
 	public String getPassword() {

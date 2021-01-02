@@ -58,19 +58,18 @@
                                         <th>Title</th>
                                         <th>Questions</th>
                                         <th>Users</th>
-                                        <th>Date and Time</th>
+                                        <th>Start Date</th>
                                         <th>Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>Trident</td>
-                                        <td>Internet
-                                            Explorer 4.0
-                                        </td>
-                                        <td>Win 95+</td>
-                                        <td> 4</td>
-                                        <td>X</td>
+                                    <tr th:each="exam: ${exams}">
+                                        <td th:text="${exam.getId()}" />
+                                        <td th:text="${exam.getTitle()}" />
+                                        <td th:text="${exam.getDescription()}" />
+                                        <td>0</td>
+                                        <td th:text="${exam.getStartDate()}" />
+                                        <td></td>
                                     </tr>
 
                                     </tbody>
