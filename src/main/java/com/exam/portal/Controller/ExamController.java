@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.context.IContext;
 
+import java.util.List;
+import java.util.Optional;
+
 @Controller
 public class ExamController {
 
@@ -29,11 +32,10 @@ public class ExamController {
         if(user instanceof OrganiserDetails){
             Organiser org = ((OrganiserDetails) user).getOrg();
             model.addAttribute("exams",repo.findByOrganiserId(org.getId()));
-            model.addAttribute("examsCount",org.getExams().size());
             return "organiser/exam/list";
         }
         else {
-            return "redirect:/organiser/login";
+            return OrganiserController.LOGIN_ROUTE;
         }
     }
 
@@ -52,13 +54,15 @@ public class ExamController {
             return "redirect:/organiser/exams";            
         }
         else{
-            return "redirect:/organiser/login";
+            return OrganiserController.LOGIN_ROUTE;
+
         }
     }
 
     @GetMapping("/organiser/exams/view")
-    public String viewExam(@RequestParam(name = "id",required = true ) String id,Model model){
-        // get exam from id and pass to view
+    public String viewExam(@RequestParam(name = "id",required = true ) Long id,Model model){
+        Exam exam=repo.findById(id).get();
+        model.addAttribute("exam",exam);
         return "organiser/exam/view";
     }
 }

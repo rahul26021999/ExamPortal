@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface ExamRepository extends JpaRepository<Exam, Long> {
+
     @Query("SELECT e FROM Exam e WHERE e.organisers.id = ?1")
     List<Exam> findByOrganiserId(Long organiser_id);
 }

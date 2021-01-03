@@ -15,7 +15,9 @@ public class OrganiserController {
 
 	@Autowired
 	OrganiserRepository repo;
-	
+
+	public static String LOGIN_ROUTE="redirect:/organiser/login";
+
 	@GetMapping("organiser/register")
 	public String register(Model model) {
 		model.addAttribute("organiser",new Organiser());

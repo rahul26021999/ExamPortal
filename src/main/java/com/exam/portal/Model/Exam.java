@@ -139,4 +139,8 @@ public class Exam {
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
+
+	public List<Question> getQuestions() {
+		return questions;
+	}
 }

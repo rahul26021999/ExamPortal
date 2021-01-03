@@ -22,7 +22,218 @@
 
     <div th:replace="organiser/fragments/navbar :: header"></div>
     <div th:replace="organiser/fragments/sidenav :: mySidebar"></div>
+    <div class="content-wrapper">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>View Exam</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Show Exam</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="content">
+            <div class="container-fluid">
+                <table>
+                    <tr>
+                        <td>Exam Title : </td>
+                        <td th:text="${exam.getTitle()}"></td>
+                    </tr>
+                    <tr>
+                        <td>Exam Description : </td>
+                        <td th:text="${exam.getDescription()}"></td>
+                    </tr>
+                    <tr>
+                        <td>Date Of Exam : </td>
+                        <td th:text="${exam.getStartDate()}"></td>
+                    </tr>
+                    <tr>
+                        <td>Exam Time : </td>
+                        <td th:text="${exam.getExamTime()}"></td>
+                    </tr>
+                    <tr>
+                        <td>Marks (Per Question) : </td>
+                        <td th:text="${exam.getMarksOfEachQuestion()}"></td>
+                        <td>Negative Marks (Per Question) : </td>
+                        <td th:text="${exam.getNegativeMarkOfEachQuestion()}"></td>
+                    </tr>
+                </table>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default">
+                                    Add Question
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Collapsible Accordion</h3>
+                                            </div>
+                                            <!-- /.card-header -->
+                                            <div class="card-body">
+                                                <div id="accordion">
+                                                    <!-- we are adding the .class so bootstrap.js collapse plugin detects it -->
+                                                    <div class="card card-primary">
+                                                        <div class="card-header">
+                                                            <h4 class="card-title">
+                                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                                                    Collapsible Group Item #1
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapseOne" class="panel-collapse collapse in">
+                                                            <div class="card-body">
+                                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
+                                                                3
+                                                                wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt
+                                                                laborum
+                                                                eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee
+                                                                nulla
+                                                                assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
+                                                                nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft
+                                                                beer
+                                                                farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
+                                                                labore sustainable VHS.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card card-danger">
+                                                        <div class="card-header">
+                                                            <h4 class="card-title">
+                                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                                                    Collapsible Group Danger
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapseTwo" class="panel-collapse collapse">
+                                                            <div class="card-body">
+                                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
+                                                                3
+                                                                wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt
+                                                                laborum
+                                                                eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee
+                                                                nulla
+                                                                assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
+                                                                nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft
+                                                                beer
+                                                                farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
+                                                                labore sustainable VHS.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card card-success">
+                                                        <div class="card-header">
+                                                            <h4 class="card-title">
+                                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                                                    Collapsible Group Success
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapseThree" class="panel-collapse collapse">
+                                                            <div class="card-body">
+                                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
+                                                                3
+                                                                wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt
+                                                                laborum
+                                                                eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee
+                                                                nulla
+                                                                assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
+                                                                nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft
+                                                                beer
+                                                                farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
+                                                                labore sustainable VHS.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /.card-body -->
+                                        </div>
+                                        <!-- /.card -->
+                                    </div>
+                                    <!-- /.col -->
+                                </div>
+<!--                                <div th:each="question :${exam}">-->
 
+<!--                                </div>-->
+                            </div>
+                            <div class="card-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="modal-default">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form th:action="@{/organiser/question/add}" method="post">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Add Question</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label>Statement</label>
+                                        <input type="hidden" class="form-control" name="exam_id" th:value="${exam.getId()}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Statement</label>
+                                        <input type="text" class="form-control" name="question" placeholder="Enter ...">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Option 1</label>
+                                        <input type="text" class="form-control" name="option[]" placeholder="Enter ...">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Option 2</label>
+                                        <input type="text" class="form-control" name="option[]" placeholder="Enter ...">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Option 3</label>
+                                        <input type="text" class="form-control" name="option[]" placeholder="Enter ...">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Option 4</label>
+                                        <input type="text" class="form-control" name="option[]" placeholder="Enter ...">
+                                    </div>
+                                </div>
+                                <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+            </div>
+        </section>
+    </div>
+
+    <!--                            <div th:case="3" class="row">-->
+    <!--                                <div class="form-group">-->
+    <!--                                    <label for="usersList">UserList</label>-->
+    <!--                                    <div class="input-group">-->
+    <!--                                        <div class="custom-file">-->
+    <!--                                            <input type="file" class="custom-file-input" id="usersList">-->
+    <!--                                            <label class="custom-file-label" for="usersList">Choose file</label>-->
+    <!--                                        </div>-->
+    <!--                                    </div>-->
+    <!--                                </div>-->
+    <!--                            </div>-->
 
 
     <div th:replace="organiser/fragments/navbar :: footer"></div>
@@ -40,9 +251,5 @@
 <!-- AdminLTE -->
 <script src="/webjars/AdminLTE/3.0.0/dist/js/adminlte.js"></script>
 
-<!-- OPTIONAL SCRIPTS -->
-<script src="/webjars/AdminLTE/3.0.0/plugins/chart.js/Chart.min.js"></script>
-<script src="/webjars/AdminLTE/3.0.0/dist/js/demo.js"></script>
-<script src="/webjars/AdminLTE/3.0.0/dist/js/pages/dashboard3.js"></script>
 </body>
 </html>
