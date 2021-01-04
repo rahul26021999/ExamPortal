@@ -24,6 +24,16 @@ public class Option {
 	@Column(length=50,name = "statement")
 	private String option;
 
+	public Option(Question questions, String option) {
+		this.questions = questions;
+		this.option = option;
+	}
+
+	public Option() {
+
+	}
+
+
 	public Long getId() {
 		return id;
 	}

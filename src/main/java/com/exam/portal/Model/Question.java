@@ -1,16 +1,8 @@
 package com.exam.portal.Model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "questions")
@@ -32,6 +24,12 @@ public class Question {
 	@ManyToOne
 	@JoinColumn(name= "exam_id", nullable=false)
 	private Exam exams;
+
+	@OneToMany(mappedBy="questions", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<Option> options= new ArrayList<Option>();
+
+	@OneToOne(mappedBy="questions", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Option answer;
 
 
 	public Long getId() {
@@ -59,4 +57,15 @@ public class Question {
 		this.exams = exams;
 	}
 
+	public List<Option> getOptions() {
+		return options;
+	}
+
+	public void setOptions(List<Option> options) {
+		this.options = options;
+	}
+
+	public Option getAnswer() {
+		return answer;
+	}
 }

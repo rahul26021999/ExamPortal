@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 
 import com.exam.portal.Model.Exam;
@@ -47,7 +48,9 @@ public class ExamRepositoryTest {
 		Organiser org=new Organiser();
 		org.setEmail("rahul@gmail.com");
 		org.setName("Rahul");
-		org.setPassword("password");
+		BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
+		String encodedPassword=encoder.encode("password");
+		org.setPassword(encodedPassword);
 		OrgRepo.save(org);
 
 		Exam exam= new Exam();

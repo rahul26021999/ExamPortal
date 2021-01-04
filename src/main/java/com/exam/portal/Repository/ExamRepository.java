@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.exam.portal.Model.Exam;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ExamRepository extends JpaRepository<Exam, Long> {

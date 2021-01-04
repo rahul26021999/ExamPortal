@@ -64,7 +64,9 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="exam: ${exams}">
-                                        <td th:text="${exam.getId()}" />
+                                        <td>
+                                            <a th:href="@{/organiser/exams/view(id=${exam.getId()})}" th:text="${exam.getId()}"></a>
+                                        </td>
                                         <td th:text="${exam.getTitle()}" />
                                         <td th:text="${exam.getDescription()}" />
                                         <td>0</td>
