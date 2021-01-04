@@ -82,6 +82,7 @@
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-question">
                                     Add Question
                                 </button>
+                                <h1 th:text="${questionCount}"></h1>
                                 <ol>
                                     <li th:each="question :${exam.getQuestions()}">
                                         <div th:text="${question.getStatement()}"></div>
@@ -90,7 +91,7 @@
                                                 <span th:text="${option.getOption()}"></span>
                                             </li>
                                         </ul>
-                                        <div class="text-danger">Answer : <span th:text="${question.getAnswer().getOption()}"></span></div>
+                                        <div class="text-danger">Answer : <span th:text="${question.getAnswer().getAnswer().getOption()}"></span></div>
                                     </li>
                                 </ol>
                             </div>

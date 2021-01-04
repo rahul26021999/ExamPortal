@@ -23,6 +23,10 @@ public class Answer {
         this.answer = answer;
     }
 
+    public Answer() {
+
+    }
+
     public Question getQuestions() {
         return questions;
     }

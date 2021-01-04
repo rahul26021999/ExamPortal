@@ -63,9 +63,9 @@ public class Exam {
 	 * exam id is the foreign key in the question table
 	 * one exam will contain many questions.
 	 */
-	@OneToMany(mappedBy="exams", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy="exams", cascade = CascadeType.ALL)
 	private List<Question> questions= new ArrayList<Question>();
-	
+
 
 
 	public Long getId() {
@@ -140,6 +140,7 @@ public class Exam {
 		this.startDate = startDate;
 	}
 
+	@OneToMany(mappedBy="exams", cascade = CascadeType.ALL, fetch = FetchType.EAGER,targetEntity = Question.class)
 	public List<Question> getQuestions() {
 		return questions;
 	}

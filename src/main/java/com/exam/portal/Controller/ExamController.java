@@ -63,6 +63,7 @@ public class ExamController {
     public String viewExam(@RequestParam(name = "id",required = true ) Long id,Model model){
         Exam exam=repo.findById(id).get();
         model.addAttribute("exam",exam);
+        model.addAttribute("questionCount",exam.getQuestions().size());
         return "organiser/exam/view";
     }
 }

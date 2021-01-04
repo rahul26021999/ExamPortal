@@ -25,11 +25,11 @@ public class Question {
 	@JoinColumn(name= "exam_id", nullable=false)
 	private Exam exams;
 
-	@OneToMany(mappedBy="questions", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="questions", cascade = CascadeType.ALL)
 	private List<Option> options= new ArrayList<Option>();
 
-	@OneToOne(mappedBy="questions", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Option answer;
+	@OneToOne(mappedBy="questions", cascade = CascadeType.ALL)
+	private Answer answer;
 
 
 	public Long getId() {
@@ -65,7 +65,7 @@ public class Question {
 		this.options = options;
 	}
 
-	public Option getAnswer() {
+	public Answer getAnswer() {
 		return answer;
 	}
 }
