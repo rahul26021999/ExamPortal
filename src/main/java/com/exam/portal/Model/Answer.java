@@ -16,11 +16,11 @@ public class Answer {
 
     @OneToOne
     @JoinColumn(name= "option_id", nullable=false)
-    private Option answer;
+    private Option option;
 
-    public Answer(Question questions, Option answer) {
+    public Answer(Question questions, Option option) {
         this.questions = questions;
-        this.answer = answer;
+        this.option = option;
     }
 
     public Answer() {
@@ -36,11 +36,11 @@ public class Answer {
     }
 
     public Option getAnswer() {
-        return answer;
+        return option;
     }
 
     public void setAnswer(Option answer) {
-        this.answer = answer;
+        this.option = answer;
     }
 
     public Long getId() {

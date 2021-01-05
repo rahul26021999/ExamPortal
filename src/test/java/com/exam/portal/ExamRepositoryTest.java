@@ -65,6 +65,7 @@ public class ExamRepositoryTest {
 		
 		Exam savedExam= repo.save(exam);
 
+
 		Question question= new Question();
 		question.setStatement("find the area of rectangle having length= 5 and breadth= 4");
 		question.setExams(savedExam);
@@ -73,12 +74,6 @@ public class ExamRepositoryTest {
 		//first option
 		Option option=new Option();
 		option.setOption("hello");
-		option.setQuestions(savedQuestion);
-		optionRepo.save(option);
-
-		//second option
-		option=new Option();
-		option.setOption("hello1");
 		option.setQuestions(savedQuestion);
 		optionRepo.save(option);
 

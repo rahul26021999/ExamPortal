@@ -82,10 +82,13 @@
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-question">
                                     Add Question
                                 </button>
-                                <h1 th:text="${questionCount}"></h1>
+                                <br>
                                 <ol>
                                     <li th:each="question :${exam.getQuestions()}">
-                                        <div th:text="${question.getStatement()}"></div>
+                                        <div>
+                                            <span th:text="${question.getStatement()}"></span>
+                                            <span class="align-content-end"><a class="text-danger" th:href="@{/organiser/question/delete(exam_id=${exam.getId()},question_id=${question.getId()})}">Delete</a></span>
+                                        </div>
                                         <ul>
                                             <li th:each="option : ${question.getOptions()}">
                                                 <span th:text="${option.getOption()}"></span>

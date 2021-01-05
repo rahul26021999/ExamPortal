@@ -10,6 +10,7 @@ import com.exam.portal.Repository.OptionRepository;
 import com.exam.portal.Repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -50,4 +51,14 @@ public class QuestionController {
 
         return "redirect:/organiser/exams/view?id="+exam_id;
     }
+
+    @GetMapping("/organiser/question/delete")
+    public String deleteQuestion(@RequestParam(name = "question_id") Long question_id,@RequestParam(name="exam_id")Long exam_id){
+        Question q=repo.findById(question_id).get();
+//        answerRepo.deleteById(q.getAnswer().getId());
+//        optionRepo.deleteAll(q.getOptions());
+        repo.delete(q);
+        return "redirect:/organiser/exams/view?id="+exam_id;
+    }
+
 }

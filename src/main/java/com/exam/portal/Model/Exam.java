@@ -6,6 +6,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -65,8 +66,6 @@ public class Exam {
 	 */
 	@OneToMany(mappedBy="exams", cascade = CascadeType.ALL)
 	private List<Question> questions= new ArrayList<Question>();
-
-
 
 	public Long getId() {
 		return id;
@@ -140,7 +139,6 @@ public class Exam {
 		this.startDate = startDate;
 	}
 
-	@OneToMany(mappedBy="exams", cascade = CascadeType.ALL, fetch = FetchType.EAGER,targetEntity = Question.class)
 	public List<Question> getQuestions() {
 		return questions;
 	}

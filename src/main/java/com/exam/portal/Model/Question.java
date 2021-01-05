@@ -3,6 +3,7 @@ package com.exam.portal.Model;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "questions")
@@ -25,10 +26,11 @@ public class Question {
 	@JoinColumn(name= "exam_id", nullable=false)
 	private Exam exams;
 
-	@OneToMany(mappedBy="questions", cascade = CascadeType.ALL)
+
+	@OneToMany(mappedBy="questions", cascade = CascadeType.REMOVE,orphanRemoval = true)
 	private List<Option> options= new ArrayList<Option>();
 
-	@OneToOne(mappedBy="questions", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy="questions", cascade = CascadeType.REMOVE,orphanRemoval = true)
 	private Answer answer;
 
 
@@ -61,9 +63,6 @@ public class Question {
 		return options;
 	}
 
-	public void setOptions(List<Option> options) {
-		this.options = options;
-	}
 
 	public Answer getAnswer() {
 		return answer;
