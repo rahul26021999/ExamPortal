@@ -28,7 +28,6 @@ public class UserRepositoryTest {
 		User user=new User();
 		user.setEmail("rahul@gmail.com");
 		user.setName("Rahul");
-		user.setPassword("password");
 		
 		User savedUser=repo.save(user);
 		User existsUser=entityManager.find(User.class,savedUser.getId());

@@ -10,10 +10,20 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "users")
 public class User {
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	
+
+	public User(String email, String name) {
+		this.email=email;
+		this.name=name;
+	}
+
+	public User() {
+
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -32,20 +42,12 @@ public class User {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
+
+
 	@Column(nullable=false,unique=true,length=50)
 	private String email;
 	
 	@Column(nullable=false,length=50)
 	private String name;
-	
-	@Column(nullable=false,length=50)
-	private String password;
 
 }

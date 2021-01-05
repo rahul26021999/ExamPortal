@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="/webjars/AdminLTE/3.0.0/plugins/fontawesome-free/css/all.min.css">
     <!-- IonIcons -->
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="/webjars/AdminLTE/3.0.0/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="/webjars/AdminLTE/3.0.0/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="/webjars/AdminLTE/3.0.0/dist/css/adminlte.min.css">
     <!-- Google Font: Source Sans Pro -->
@@ -112,11 +115,41 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#model_user">
-                                    Add User
-                                </button>
+                                <form th:action="@{/organiser/user/add}" method="post" class="form-inline">
+                                    <div class="form-group p-2">
+                                        <label for="name" class="pr-2">Name:</label>
+                                        <input type="text" id="name" class="form-control" name="name">
+                                    </div>
+                                    <input type="hidden" name="exam_id" th:value="${exam.getId()}">
+                                    <div class="form-group p-2">
+                                        <label for="email" class="pr-2">Email:</label>
+                                        <input type="text" id="email" class="form-control" name="email">
+                                    </div>
+                                    <div class="form-group p-2">
+                                        <input type="submit" class="btn btn-primary" name="submit" value="Add User">
+                                    </div>
+                                </form>
+                                <table id="examList" class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="userExam: ${exam.getUserExam()}">
+                                        <td th:text="${userExam.getUser().getName()}"></td>
+                                        <td th:text="${userExam.getUser().getEmail()}"></td>
+                                    </tr>
+
+                                    </tbody>
+                                    <tfoot>
+
+                                    </tfoot>
+                                </table>
                             </div>
                             <div class="card-footer">
+
                             </div>
                         </div>
                     </div>
@@ -203,7 +236,11 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- REQUIRED SCRIPTS -->
+<!-- DataTables -->
+<script src="/webjars/AdminLTE/3.0.0/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/webjars/AdminLTE/3.0.0/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/webjars/AdminLTE/3.0.0/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/webjars/AdminLTE/3.0.0/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 
 <!-- jQuery -->
 <script src="/webjars/AdminLTE/3.0.0/plugins/jquery/jquery.min.js"></script>

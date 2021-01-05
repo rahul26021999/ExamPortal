@@ -67,6 +67,17 @@ public class Exam {
 	@OneToMany(mappedBy="exams", cascade = CascadeType.ALL)
 	private List<Question> questions= new ArrayList<Question>();
 
+	public List<UserExam> getUserExam() {
+		return userExam;
+	}
+
+	public void setUserExam(List<UserExam> userExam) {
+		this.userExam = userExam;
+	}
+
+	@OneToMany(mappedBy="exams", cascade = CascadeType.ALL)
+	private List<UserExam> userExam;
+
 	public Long getId() {
 		return id;
 	}
