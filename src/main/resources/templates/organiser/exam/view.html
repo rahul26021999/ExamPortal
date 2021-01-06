@@ -82,15 +82,15 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-question">
+                                <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#modal-question">
                                     Add Question
                                 </button>
-                                <br>
                                 <ol>
                                     <li th:each="question :${exam.getQuestions()}">
                                         <div>
                                             <span th:text="${question.getStatement()}"></span>
-                                            <span class="align-content-end"><a class="text-danger" th:href="@{/organiser/question/delete(exam_id=${exam.getId()},question_id=${question.getId()})}">Delete</a></span>
+                                            <a class="text-danger ml-3" th:href="@{/organiser/question/delete(exam_id=${exam.getId()},question_id=${question.getId()})}"><i class="fa fa-trash"></i></a>
+                                            <a class="text-success ml-3" ><i class="fa fa-pen"></i></a>
                                         </div>
                                         <ul>
                                             <li th:each="option : ${question.getOptions()}">

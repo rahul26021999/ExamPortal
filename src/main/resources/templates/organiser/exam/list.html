@@ -65,11 +65,11 @@
                                     <tbody>
                                     <tr th:each="exam: ${exams}">
                                         <td>
-                                            <a th:href="@{/organiser/exams/view(id=${exam.getId()})}" th:text="${exam.getId()}"></a>
+                                            <a th:href="@{/organiser/exams/view(id=${exam.getId()})}" th:text="${exam.getExamCode()}"></a>
                                         </td>
                                         <td th:text="${exam.getTitle()}" />
-                                        <td th:text="${exam.getDescription()}" />
-                                        <td>0</td>
+                                        <td th:text="${exam.getQuestions().size()}"></td>
+                                        <td th:text="${exam.getUserExam().size()}"></td>
                                         <td th:text="${exam.getStartDate()}" />
                                         <td></td>
                                     </tr>

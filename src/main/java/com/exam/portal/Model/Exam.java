@@ -2,11 +2,9 @@ package com.exam.portal.Model;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.sql.Array;
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -152,5 +150,22 @@ public class Exam {
 
 	public List<Question> getQuestions() {
 		return questions;
+	}
+
+	public String getExamCode(){
+		String[] titleList=this.title.split(" ");
+		StringBuilder Code=new StringBuilder();
+		for (String t:titleList) {
+			char c=t.charAt(0);
+			if(Character.isLetter(c) || Character.isDigit(c)){
+				Code.append(c);
+			}
+		}
+		String[] letters={"EXAM","XAM","MOK","LT","MDS","FPA","KU","POU","KIH","RTU"};
+		if(Code.toString().equals("")){
+			int index= (int) (this.id % 10);
+			Code.append(letters[index]);
+		}
+		return Code.toString().toUpperCase()+"-"+this.id.toString();
 	}
 }
