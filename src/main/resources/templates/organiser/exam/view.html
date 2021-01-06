@@ -134,12 +134,16 @@
                                     <tr>
                                         <th>Name</th>
                                         <th>Email</th>
+                                        <th>Password</th>
+                                        <th>Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr th:each="userExam: ${exam.getUserExam()}">
                                         <td th:text="${userExam.getUser().getName()}"></td>
                                         <td th:text="${userExam.getUser().getEmail()}"></td>
+                                        <td th:text="${userExam.getPassword()}"></td>
+                                        <td><a th:href="@{/organsier/user/delete(id=${userExam.getId()})}"><i class="fa fa-trash"></i></a></td>
                                     </tr>
 
                                     </tbody>

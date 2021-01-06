@@ -10,13 +10,17 @@ public class UserExam {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL,targetEntity = Exam.class)
+    @Column(name = "password")
+    private String password;
+
+    @ManyToOne(targetEntity = Exam.class)
     @JoinColumn(name= "exam_id", nullable=false)
     private Exam exams;
 
-    public UserExam(User user, Exam exam) {
+    public UserExam(User user, Exam exam,String password) {
         this.exams=exam;
         this.user=user;
+        this.password=password;
     }
 
     public UserExam() {
@@ -32,7 +36,7 @@ public class UserExam {
         this.user = user;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL,targetEntity = User.class)
+    @ManyToOne(targetEntity = User.class)
     @JoinColumn(name= "user_id", nullable=false)
     private User user;
 
@@ -53,4 +57,11 @@ public class UserExam {
         this.exams = exams;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

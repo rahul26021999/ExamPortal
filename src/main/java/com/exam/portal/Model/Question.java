@@ -27,10 +27,10 @@ public class Question {
 	private Exam exams;
 
 
-	@OneToMany(mappedBy="questions", cascade = CascadeType.REMOVE,orphanRemoval = true)
+	@OneToMany(mappedBy="questions")
 	private List<Option> options= new ArrayList<Option>();
 
-	@OneToOne(mappedBy="questions", cascade = CascadeType.REMOVE,orphanRemoval = true)
+	@OneToOne(mappedBy="questions")
 	private Answer answer;
 
 
