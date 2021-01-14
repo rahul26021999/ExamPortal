@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpSession;
 import java.net.http.HttpResponse;
 
 @Controller
@@ -57,51 +58,92 @@ public class UserController {
         userExamRepository.delete(userExam);
         return "redirect:/organiser/exams/view?id="+exam_id;
     }
-    @PostMapping("{examCode}/login")
-    public String loginUser(@PathVariable(name = "examCode")String examCode,@RequestParam(name = "email")String email,Model model){
-        String redirectUrl="redirect:/"+examCode+"/login";
+
+    public boolean checkValidExamCode(String examCode){
         Long exam_id= Long.valueOf(examCode.split("-")[1]);
         if(examRepository.findById(exam_id).isPresent()){
             Exam exam=examRepository.findById(exam_id).get();
-            if(exam.getExamCode().equals(examCode)){
+            return exam.getExamCode().equals(examCode);
+        }else{
+            return false;
+        }
+    }
+
+    @PostMapping("{examCode}/login")
+    public String loginUser(@PathVariable(name = "examCode")String examCode,@RequestParam(name = "email")String email,@RequestParam(name = "password")String password,Model model,HttpSession session){
+        String redirectUrl="redirect:/"+examCode+"/login";
+        try{
+            if(checkValidExamCode(examCode)){
                 User user=userRepo.findByEmail(email);
                 if(user==null){
-                    model.addAttribute("error","Invalid User.User not found");
-                }else {
-                    UserExam userExam=userExamRepository.findUserExamByUser(exam_id,user.getId());
-                    if(userExam==null){
-                        model.addAttribute("error","User Not Authorised to give this exam");
-                    }else{
-                        //got to Exam page
-                        //set redirect url
-                        //create session and all things for user
-                    }
+                    redirectUrl+="?error=1";
+                    throw new Exception();
                 }
-            }else{
-                model.addAttribute("error","Invalid Exam Code.Please check Carefully");
-            }
-        }else{
-            model.addAttribute("error","Invalid Exam Code.Please check Carefully");
-        }
-        return redirectUrl;
-    }
-    @GetMapping("{examCode}/login")
-    public String showLogin(@PathVariable(name = "examCode")String examCode,Model model){
-        try{
-            Long exam_id= Long.valueOf(examCode.split("-")[1]);
-            if(examRepository.findById(exam_id).isPresent()){
-                Exam exam=examRepository.findById(exam_id).get();
-                if(exam.getExamCode().equals(examCode)){
-                    model.addAttribute("exam",exam);
-                    return "user/login";
+
+                Long exam_id= Long.valueOf(examCode.split("-")[1]);
+                UserExam userExam=userExamRepository.findUserExamByUser(exam_id,user.getId());
+                if(userExam==null){
+                    redirectUrl+="?error=2";
+                    throw new Exception();
+                }else if(userExam.getPassword().equals(password)){
+                    session.setAttribute("user_id",user.getId());
+                    session.setAttribute("exam_id",exam_id);
+                    return "redirect:/"+examCode+"/exam";
                 }else{
+                    redirectUrl+="?error=1";
                     throw new Exception();
                 }
             }else{
                 throw new Exception();
             }
         }catch(Exception e){
+            return redirectUrl;
+        }
+    }
+
+    @GetMapping("{examCode}/login")
+    public String showLogin(HttpSession session, @PathVariable(name = "examCode")String examCode, Model model){
+        try{
+            if(checkValidExamCode(examCode)){
+                Long exam_id= Long.valueOf(examCode.split("-")[1]);
+                Exam exam=examRepository.findById(exam_id).get();
+                model.addAttribute("exam",exam);
+                return "user/login";
+            }else{
+                throw new Exception();
+            }
+        }catch(Exception e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("{examCode}/exam")
+    public String showUserDashboard(HttpSession session, @PathVariable(name = "examCode")String examCode, Model model){
+        try{
+            if(checkValidExamCode(examCode)){
+                long exam_id= Long.parseLong(examCode.split("-")[1]);
+                // get user_id and exam_id from Session
+                Long session_user_id= (Long) session.getAttribute("user_id");
+                Long session_exam_id= (Long) session.getAttribute("exam_id");
+
+                if(exam_id != session_exam_id)
+                    throw new Exception();
+
+                if(userRepo.findById(session_user_id).isEmpty())
+                    throw new Exception();
+
+                UserExam userExam=userExamRepository.findUserExamByUser(session_exam_id,session_user_id);
+                if(userExam==null)
+                    throw new Exception();
+
+                //More check if exam has started or not and all instruction page and all everything
+                return "user/dashboard";
+            }else{
+                throw new Exception();
+            }
+        }
+        catch (Exception e){
+            return "redirect:/"+examCode+"/login";
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.exam.portal.Controller;
 
+import com.exam.portal.OrganiserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,6 +37,10 @@ public class OrganiserController {
 	
 	@GetMapping("organiser/login")
 	public String login() {
+		Object user= SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if(user instanceof OrganiserDetails){
+			return "redirect:/organiser/dashboard";
+		}
 		return "organiser/login";
 	}
 	

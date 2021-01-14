@@ -62,10 +62,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					.passwordParameter("password")
 					.loginProcessingUrl("/organiser/login")
 					.defaultSuccessUrl("/organiser/dashboard")
-					.permitAll();
-//				.and()
-//				.logout().logoutRequestMatcher(new AntPathRequestMatcher("/organiser/logut")).logoutSuccessUrl("/organiser/login")
-//				.permitAll();
+					.permitAll()
+				.and()
+				.logout().logoutRequestMatcher(new AntPathRequestMatcher("/organiser/logout")).logoutSuccessUrl("/organiser/login?logout")
+				.permitAll();
 	}
 	
 }
