@@ -1,10 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>dashboard</title>
-</head>
-<body>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard </title>
 
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="/webjars/AdminLTE/3.0.0/plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/webjars/AdminLTE/3.0.0/dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition layout-top-nav">
+<div class="wrapper">
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Main content -->
+        <div class="content">
+            <div class="container">
+                <div class="row">
+                    <form th:action="@{'/' + ${exam.getExamCode()} + '/submit'}" method="post">
+                        <div class="col-sm-12">
+                            <ol>
+                                <li th:each="question: ${exam.getQuestions()}">
+                                    <div th:text="${question.getStatement()}"></div>
+                                    <div class="form-group" th:each="option : ${question.getOptions()}">
+                                        <input type="radio" th:name="${question.getId()}" th:value="${option.getId()}">
+                                        <label th:text="${option.getOption()}"></label>
+                                    </div>
+                                </li>
+                            </ol>
+                            <input type="submit" value="Submit" class="btn btn-primary">
+                        </div>
+                    </form>
+                </div>
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+
+<!-- jQuery -->
+<script src="/webjars/AdminLTE/3.0.0/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/webjars/AdminLTE/3.0.0/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/webjars/AdminLTE/3.0.0/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/webjars/AdminLTE/3.0.0/dist/js/demo.js"></script>
 </body>
 </html>

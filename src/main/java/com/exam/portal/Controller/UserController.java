@@ -1,11 +1,7 @@
 package com.exam.portal.Controller;
 
-import com.exam.portal.Model.Exam;
-import com.exam.portal.Model.User;
-import com.exam.portal.Model.UserExam;
-import com.exam.portal.Repository.ExamRepository;
-import com.exam.portal.Repository.UserExamRepository;
-import com.exam.portal.Repository.UserRepository;
+import com.exam.portal.Model.*;
+import com.exam.portal.Repository.*;
 import com.exam.portal.Utils.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpSession;
+import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 @Controller
@@ -33,6 +30,15 @@ public class UserController {
 
     @Autowired
     UserExamRepository userExamRepository;
+
+    @Autowired
+    UserAnswerRepository userAnswerRepository;
+
+    @Autowired
+    QuestionRepository questionRepository;
+
+    @Autowired
+    OptionRepository optionRepository;
 
     @PostMapping("/organiser/user/add")
     public String addUser(@RequestParam(name = "exam_id")Long exam_id,@RequestParam(name="name")String name,@RequestParam(name="email")String email){
@@ -136,6 +142,8 @@ public class UserController {
                 if(userExam==null)
                     throw new Exception();
 
+                Exam exam=examRepository.findById(exam_id).get();
+                model.addAttribute("exam",exam);
                 //More check if exam has started or not and all instruction page and all everything
                 return "user/dashboard";
             }else{
@@ -145,5 +153,16 @@ public class UserController {
         catch (Exception e){
             return "redirect:/"+examCode+"/login";
         }
+    }
+
+    public String saveAnswers(){
+//        Option answer=optionRepository.findById(option_id).get();
+//        Question question=questionRepository.findById(question_id).get();
+//        UserAnswer userAnswer=new UserAnswer();
+//        userAnswer.setAnswer(answer);
+//        userAnswer.setQuestions(question);
+//        userExamRepository.save(userAnswer);
+
+        return "";
     }
 }
