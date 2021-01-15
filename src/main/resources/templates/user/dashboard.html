@@ -15,26 +15,42 @@
 <body class="hold-transition layout-top-nav">
 <div class="wrapper">
 
+    <div th:replace="user/header :: header"></div>
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Main content -->
         <div class="content">
             <div class="container">
                 <div class="row">
-                    <form th:action="@{'/' + ${exam.getExamCode()} + '/submit'}" method="post">
-                        <div class="col-sm-12">
-                            <ol>
-                                <li th:each="question: ${exam.getQuestions()}">
-                                    <div th:text="${question.getStatement()}"></div>
-                                    <div class="form-group" th:each="option : ${question.getOptions()}">
-                                        <input type="radio" th:name="${question.getId()}" th:value="${option.getId()}">
-                                        <label th:text="${option.getOption()}"></label>
+                    <div class="col-sm-3">
+                       <div class="card">
+                           <div class="card-body">
+                               <div class="row">
+                                   <div class="col-3" th:each="i: ${#numbers.sequence(0,exam.getQuestions().size()-1)}">
+                                       <div class="text-center text-bold bg-gray-light p-2 mt-2">
+                                           <a th:href="@{'/'+${exam.getExamCode()}+'/exam/'+${exam.getQuestions().get(i).getId()}}" th:text="${exam.getQuestions().get(i).getId()}" class="d-block"></a>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="card">
+                            <div class="card-body">
+                                <form th:action="@{'/' + ${exam.getExamCode()} + '/submit'}" method="post">
+                                    <div class="col-sm-12">
+                                        <div th:text="${question.getStatement()}" class="mb-2 text-bold"></div>
+                                        <div class="form-group" th:each="option : ${question.getOptions()}">
+                                            <input type="radio" th:name="${question.getId()}" th:value="${option.getId()}">
+                                            <span th:text="${option.getOption()}"></span>
+                                        </div>
+                                        <input type="submit" value="Submit" class="btn btn-primary">
                                     </div>
-                                </li>
-                            </ol>
-                            <input type="submit" value="Submit" class="btn btn-primary">
+                                </form>
+                            </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
                 <!-- /.row -->
             </div><!-- /.container-fluid -->

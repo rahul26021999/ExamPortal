@@ -2,6 +2,7 @@ package com.exam.portal.Model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Set;
 
@@ -64,6 +65,9 @@ public class Question {
 	}
 
 
+	public String getBaseEncodedId(){
+		return Base64.getEncoder().encode(new byte[]{this.id.byteValue()}).toString();
+	}
 	public Answer getAnswer() {
 		return answer;
 	}

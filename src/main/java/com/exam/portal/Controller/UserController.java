@@ -17,6 +17,8 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.servlet.http.HttpSession;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
+import java.util.Base64;
 
 @Controller
 public class UserController {
@@ -94,7 +96,7 @@ public class UserController {
                 }else if(userExam.getPassword().equals(password)){
                     session.setAttribute("user_id",user.getId());
                     session.setAttribute("exam_id",exam_id);
-                    return "redirect:/"+examCode+"/exam";
+                    return "redirect:/"+examCode+"/instruction";
                 }else{
                     redirectUrl+="?error=1";
                     throw new Exception();
@@ -123,35 +125,80 @@ public class UserController {
         }
     }
 
-    @GetMapping("{examCode}/exam")
-    public String showUserDashboard(HttpSession session, @PathVariable(name = "examCode")String examCode, Model model){
+    @GetMapping("user/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "redirect:/";
+    }
+
+    @GetMapping("{examcode}/instruction")
+    public String showInstructionPage(Model model,@PathVariable(name = "examcode")String examCode,HttpSession session){
         try{
             if(checkValidExamCode(examCode)){
-                long exam_id= Long.parseLong(examCode.split("-")[1]);
-                // get user_id and exam_id from Session
-                Long session_user_id= (Long) session.getAttribute("user_id");
-                Long session_exam_id= (Long) session.getAttribute("exam_id");
-
-                if(exam_id != session_exam_id)
+                if(isLoggedInForExam(session,examCode)){
+                    long exam_id= Long.parseLong(examCode.split("-")[1]);
+                    Exam exam=examRepository.findById(exam_id).get();
+                    model.addAttribute("exam",exam);
+                    return "user/instruction";
+                }else{
                     throw new Exception();
+                }
+            }else{
+                throw new Exception();
+            }
+        }catch (Exception e){
+            return "redirect:/"+examCode+"/login";
+        }
+    }
 
-                if(userRepo.findById(session_user_id).isEmpty())
+    private boolean isLoggedInForExam(HttpSession session, String examCode) {
+
+        long exam_id= Long.parseLong(examCode.split("-")[1]);
+        Long session_user_id= (Long) session.getAttribute("user_id");
+        Long session_exam_id= (Long) session.getAttribute("exam_id");
+
+        //Check User is logged in For current Exam Code
+        if(exam_id != session_exam_id)
+            return false;
+
+        //Check User exists or not
+        if(userRepo.findById(session_user_id).isEmpty())
+            return false;
+
+        //Check User Authorization for Current Exam
+        UserExam userExam=userExamRepository.findUserExamByUser(session_exam_id,session_user_id);
+        if(userExam==null)
+            return false;
+
+        return true;
+    }
+
+    @GetMapping(value = {"/{examCode}/exam", "/{examCode}/exam/{questionID}"})
+    public String showUserDashboard(HttpSession session, @PathVariable(name = "examCode")String examCode, Model model,@PathVariable(name = "questionID")String question_id){
+        try{
+            if(checkValidExamCode(examCode)){
+                if(isLoggedInForExam(session,examCode)){
+                    long exam_id= Long.parseLong(examCode.split("-")[1]);
+                    Exam exam=examRepository.findById(exam_id).get();
+                    Question question=exam.getQuestions().get(0);
+                    if(question_id!=null){
+                        Long q_id=Long.parseLong(question_id);
+                        if(questionRepository.findById(q_id).isPresent()){
+                            question=questionRepository.findById(q_id).get();
+                        }
+                    }
+                    model.addAttribute("question",question);
+                    model.addAttribute("exam",exam);
+                    return "user/dashboard";
+                }else{
                     throw new Exception();
-
-                UserExam userExam=userExamRepository.findUserExamByUser(session_exam_id,session_user_id);
-                if(userExam==null)
-                    throw new Exception();
-
-                Exam exam=examRepository.findById(exam_id).get();
-                model.addAttribute("exam",exam);
-                //More check if exam has started or not and all instruction page and all everything
-                return "user/dashboard";
+                }
             }else{
                 throw new Exception();
             }
         }
         catch (Exception e){
-            return "redirect:/"+examCode+"/login";
+            return "redirect:/"+examCode+"/login?"+e.getMessage();
         }
     }
 
