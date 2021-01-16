@@ -29,10 +29,10 @@
                                    <div class="col-3" th:each="i: ${#numbers.sequence(0,exam.getQuestions().size()-1)}">
 
                                        <div th:if="${answers[exam.getQuestions().get(i).getId()]}" class="text-center text-bold bg-success p-2 mt-2">
-                                           <a th:href="@{'/'+${exam.getExamCode()}+'/exam/'+${exam.getQuestions().get(i).getId()}}" th:text="${i+1}" class="d-block"></a>
+                                           <a th:href="@{'/'+${exam.getExamCode()}+'/exam/'+${i+1}}" th:text="${i+1}" class="d-block"></a>
                                        </div>
                                        <div th:unless="${answers[exam.getQuestions().get(i).getId()]}" class="text-center text-bold bg-gray-light p-2 mt-2">
-                                           <a th:href="@{'/'+${exam.getExamCode()}+'/exam/'+${exam.getQuestions().get(i).getId()}}" th:text="${i+1}" class="d-block"></a>
+                                           <a th:href="@{'/'+${exam.getExamCode()}+'/exam/'+${i+1}}" th:text="${i+1}" class="d-block"></a>
                                        </div>
                                    </div>
                                </div>
@@ -45,18 +45,14 @@
                                 <form th:action="@{'/' + ${exam.getExamCode()} + '/submit'}" method="post">
                                     <div th:text="${question.getStatement()}" class="mb-2 text-bold"></div>
                                     <input type="hidden" name="question_id" th:value="${question.getId()}">
-                                    <div class="form-group" th:each="option : ${question.getOptions()}">
-                                        <div th:if="${answers[question.getId()]==option.getId()}">
-                                            <input type="radio" th:name="answer_id" th:value="${option.getId()}" checked>
-                                            <span th:text="${option.getOption()}"></span>
+                                    <div class="form-group">
+                                        <div class="form-check" th:each="option : ${question.getOptions()}">
+                                            <input th:if="${answers[question.getId()]==option.getId()}" class="form-check-input" type="radio" th:name="answer_id" th:value="${option.getId()}" checked>
+                                            <input th:unless="${answers[question.getId()]==option.getId()}" class="form-check-input" type="radio" th:name="answer_id" th:value="${option.getId()}">
+                                            <span class="form-check-label" th:text="${option.getOption()}"></span>
                                         </div>
-                                        <div th:unless="${answers[question.getId()]==option.getId()}">
-                                            <input type="radio" th:name="answer_id" th:value="${option.getId()}">
-                                            <span th:text="${option.getOption()}"></span>
-                                        </div>
-
                                     </div>
-                                    <input type="reset" value="Reset Answer" class="btn btn-danger">
+                                    <input type="reset" value="Reset Answer" class="btn btn-danger" onclick="resetRadioButtons()">
                                     <div th:if="${exam.isLastQuestion(question.getId())}" class="d-inline">
                                         <input type="submit" value="Save" class="btn btn-primary float-right">
                                     </div>
@@ -68,6 +64,12 @@
                         </div>
                     </div>
                 </div>
+                <script>
+                    function resetRadioButtons(){
+                        $("input:radio").attr("checked", false);
+                        console.log("reseting radio");
+                    }
+                </script>
                 <!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>

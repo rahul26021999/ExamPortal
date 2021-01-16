@@ -165,7 +165,7 @@ public class Exam {
 		return Code.toString().toUpperCase()+"-"+this.id.toString();
 	}
 
-	public Long getNextQuestionID(Long question_id) {
+	public int getNextQuestionNo(Long question_id) {
 		List<Question> questions = this.getQuestions();
 		int i;
 		for (i=0;i<questions.size();i++){
@@ -174,10 +174,10 @@ public class Exam {
 			}
 		}
 		if(i==questions.size()-1){
-			return questions.get(0).getId();
+			return 1;
 			//Last Question
 		}else{
-			return questions.get(i+1).getId();
+			return i+1;
 		}
 	}
 	public boolean isLastQuestion(Long question_id){

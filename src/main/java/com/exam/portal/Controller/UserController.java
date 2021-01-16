@@ -169,8 +169,8 @@ public class UserController {
         return true;
     }
 
-    @GetMapping(value = {"/{examCode}/exam", "/{examCode}/exam/{questionID}"})
-    public String showUserDashboard(HttpSession session, @PathVariable(name = "examCode")String examCode, Model model,@PathVariable(name = "questionID",required = false)String question_id){
+    @GetMapping(value = {"/{examCode}/exam", "/{examCode}/exam/{question_no}"})
+    public String showUserDashboard(HttpSession session, @PathVariable(name = "examCode")String examCode, Model model,@PathVariable(name = "question_no",required = false)Integer question_no){
         try{
             if(checkValidExamCode(examCode)){
                 if(isLoggedInForExam(session,examCode)){
@@ -178,15 +178,14 @@ public class UserController {
 
                     long exam_id= Long.parseLong(examCode.split("-")[1]);
                     Exam exam=examRepository.findById(exam_id).get();
+                    List<Question> all_questions = exam.getQuestions();
 
-                    if(question_id==null)
-                        question_id=exam.getQuestions().get(0).getId().toString();
+                    if(question_no==null)
+                        question_no=1;
 
-                    Long q_id=Long.parseLong(question_id);
-                    Question currentQuestion=questionRepository.findById(q_id).get();
+                    Question currentQuestion = all_questions.get(question_no - 1);
 
                     //Getting Answers
-                    List<Question> all_questions = exam.getQuestions();
                     HashMap<Long, Long> answers=new HashMap<>();
                     for (Question question:all_questions) {
                         UserAnswer userAnswer=userAnswerRepository.findByUserQuestion(user_id,question.getId());
@@ -194,6 +193,7 @@ public class UserController {
                             answers.put(question.getId(),userAnswer.getAnswer().getId());
                         }
                     }
+
                     model.addAttribute("answers",answers);
                     model.addAttribute("question",currentQuestion);
                     model.addAttribute("exam",exam);
@@ -236,7 +236,7 @@ public class UserController {
                         userAnswer.setQuestions(question);
                         userAnswerRepository.save(userAnswer);
                     }
-                    return "redirect:/"+examcode+"/exam/"+exam.getNextQuestionID(question_id);
+                    return "redirect:/"+examcode+"/exam/"+exam.getNextQuestionNo(question_id);
                 }else{
                     throw new Exception();
                 }
