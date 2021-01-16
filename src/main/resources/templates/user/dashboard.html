@@ -27,8 +27,12 @@
                            <div class="card-body">
                                <div class="row">
                                    <div class="col-3" th:each="i: ${#numbers.sequence(0,exam.getQuestions().size()-1)}">
-                                       <div class="text-center text-bold bg-gray-light p-2 mt-2">
-                                           <a th:href="@{'/'+${exam.getExamCode()}+'/exam/'+${exam.getQuestions().get(i).getId()}}" th:text="${exam.getQuestions().get(i).getId()}" class="d-block"></a>
+
+                                       <div th:if="${answers[exam.getQuestions().get(i).getId()]}" class="text-center text-bold bg-success p-2 mt-2">
+                                           <a th:href="@{'/'+${exam.getExamCode()}+'/exam/'+${exam.getQuestions().get(i).getId()}}" th:text="${i+1}" class="d-block"></a>
+                                       </div>
+                                       <div th:unless="${answers[exam.getQuestions().get(i).getId()]}" class="text-center text-bold bg-gray-light p-2 mt-2">
+                                           <a th:href="@{'/'+${exam.getExamCode()}+'/exam/'+${exam.getQuestions().get(i).getId()}}" th:text="${i+1}" class="d-block"></a>
                                        </div>
                                    </div>
                                </div>
@@ -39,13 +43,25 @@
                         <div class="card">
                             <div class="card-body">
                                 <form th:action="@{'/' + ${exam.getExamCode()} + '/submit'}" method="post">
-                                    <div class="col-sm-12">
-                                        <div th:text="${question.getStatement()}" class="mb-2 text-bold"></div>
-                                        <div class="form-group" th:each="option : ${question.getOptions()}">
-                                            <input type="radio" th:name="${question.getId()}" th:value="${option.getId()}">
+                                    <div th:text="${question.getStatement()}" class="mb-2 text-bold"></div>
+                                    <input type="hidden" name="question_id" th:value="${question.getId()}">
+                                    <div class="form-group" th:each="option : ${question.getOptions()}">
+                                        <div th:if="${answers[question.getId()]==option.getId()}">
+                                            <input type="radio" th:name="answer_id" th:value="${option.getId()}" checked>
                                             <span th:text="${option.getOption()}"></span>
                                         </div>
-                                        <input type="submit" value="Submit" class="btn btn-primary">
+                                        <div th:unless="${answers[question.getId()]==option.getId()}">
+                                            <input type="radio" th:name="answer_id" th:value="${option.getId()}">
+                                            <span th:text="${option.getOption()}"></span>
+                                        </div>
+
+                                    </div>
+                                    <input type="reset" value="Reset Answer" class="btn btn-danger">
+                                    <div th:if="${exam.isLastQuestion(question.getId())}" class="d-inline">
+                                        <input type="submit" value="Save" class="btn btn-primary float-right">
+                                    </div>
+                                    <div th:unless="${exam.isLastQuestion(question.getId())}" class="d-inline">
+                                        <input type="submit" value="Save and Next" class="btn btn-primary float-right">
                                     </div>
                                 </form>
                             </div>

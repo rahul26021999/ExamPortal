@@ -5,7 +5,6 @@ import com.exam.portal.Repository.*;
 import com.exam.portal.Utils.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,10 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpSession;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.Arrays;
-import java.util.Base64;
+import java.util.*;
 
 @Controller
 public class UserController {
@@ -174,20 +170,32 @@ public class UserController {
     }
 
     @GetMapping(value = {"/{examCode}/exam", "/{examCode}/exam/{questionID}"})
-    public String showUserDashboard(HttpSession session, @PathVariable(name = "examCode")String examCode, Model model,@PathVariable(name = "questionID")String question_id){
+    public String showUserDashboard(HttpSession session, @PathVariable(name = "examCode")String examCode, Model model,@PathVariable(name = "questionID",required = false)String question_id){
         try{
             if(checkValidExamCode(examCode)){
                 if(isLoggedInForExam(session,examCode)){
+                    Long user_id= (Long) session.getAttribute("user_id");
+
                     long exam_id= Long.parseLong(examCode.split("-")[1]);
                     Exam exam=examRepository.findById(exam_id).get();
-                    Question question=exam.getQuestions().get(0);
-                    if(question_id!=null){
-                        Long q_id=Long.parseLong(question_id);
-                        if(questionRepository.findById(q_id).isPresent()){
-                            question=questionRepository.findById(q_id).get();
+
+                    if(question_id==null)
+                        question_id=exam.getQuestions().get(0).getId().toString();
+
+                    Long q_id=Long.parseLong(question_id);
+                    Question currentQuestion=questionRepository.findById(q_id).get();
+
+                    //Getting Answers
+                    List<Question> all_questions = exam.getQuestions();
+                    HashMap<Long, Long> answers=new HashMap<>();
+                    for (Question question:all_questions) {
+                        UserAnswer userAnswer=userAnswerRepository.findByUserQuestion(user_id,question.getId());
+                        if(userAnswer!=null){
+                            answers.put(question.getId(),userAnswer.getAnswer().getId());
                         }
                     }
-                    model.addAttribute("question",question);
+                    model.addAttribute("answers",answers);
+                    model.addAttribute("question",currentQuestion);
                     model.addAttribute("exam",exam);
                     return "user/dashboard";
                 }else{
@@ -202,14 +210,41 @@ public class UserController {
         }
     }
 
-    public String saveAnswers(){
-//        Option answer=optionRepository.findById(option_id).get();
-//        Question question=questionRepository.findById(question_id).get();
-//        UserAnswer userAnswer=new UserAnswer();
-//        userAnswer.setAnswer(answer);
-//        userAnswer.setQuestions(question);
-//        userExamRepository.save(userAnswer);
+    @PostMapping("{examcode}/submit")
+    public String saveAnswers(HttpSession session,@PathVariable(name = "examcode")String examcode,@RequestParam(name = "answer_id",required = false)Long answer_id,@RequestParam(name = "question_id")Long question_id){
+        try{
+            if(checkValidExamCode(examcode)){
+                if(isLoggedInForExam(session,examcode)){
 
-        return "";
+                    Long user_id= (Long) session.getAttribute("user_id");
+                    Long exam_id= Long.parseLong(examcode.split("-")[1]);
+                    Exam exam = examRepository.findById(exam_id).get();
+
+                    UserAnswer userAnswer = userAnswerRepository.findByUserQuestion(user_id, question_id);
+                    if(answer_id==null){
+                        if(userAnswer!=null)
+                            userAnswerRepository.delete(userAnswer);
+                    }else{
+                        if(userAnswer==null){
+                            userAnswer = new UserAnswer();
+                        }
+                        User user = userRepo.findById(user_id).get();
+                        Question question=questionRepository.findById(question_id).get();
+                        Option answer = optionRepository.findById(answer_id).get();
+                        userAnswer.setAnswer(answer);
+                        userAnswer.setUser(user);
+                        userAnswer.setQuestions(question);
+                        userAnswerRepository.save(userAnswer);
+                    }
+                    return "redirect:/"+examcode+"/exam/"+exam.getNextQuestionID(question_id);
+                }else{
+                    throw new Exception();
+                }
+            }else{
+                throw new Exception();
+            }
+        }catch (Exception e){
+            return "redirect:/"+examcode+"/exam?"+e.getMessage();
+        }
     }
 }

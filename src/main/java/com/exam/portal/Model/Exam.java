@@ -2,14 +2,10 @@ package com.exam.portal.Model;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Array;
-import java.sql.Time;
 import java.util.*;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -168,4 +164,25 @@ public class Exam {
 		}
 		return Code.toString().toUpperCase()+"-"+this.id.toString();
 	}
+
+	public Long getNextQuestionID(Long question_id) {
+		List<Question> questions = this.getQuestions();
+		int i;
+		for (i=0;i<questions.size();i++){
+			if(questions.get(i).getId()==question_id){
+				break;
+			}
+		}
+		if(i==questions.size()-1){
+			return questions.get(0).getId();
+			//Last Question
+		}else{
+			return questions.get(i+1).getId();
+		}
+	}
+	public boolean isLastQuestion(Long question_id){
+		List<Question> questions_list = this.getQuestions();
+		return questions_list.get(questions_list.size() - 1).getId().equals(question_id);
+	}
+
 }
