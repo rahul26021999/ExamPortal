@@ -86,8 +86,18 @@ public class UserController {
                 }
                 Long exam_id= Long.valueOf(examCode.split("-")[1]);
                 Exam exam=examRepository.findById(exam_id).get();
+                Long currentTime=new Date().getTime();
                 Long examTime = exam.getStartDate().getTime();
-
+                if(examTime-currentTime>900000){
+                    // You can login only before 15 mins of exam start time
+                    redirectUrl+="?error=4";
+                    throw new Exception();
+                }
+                if(currentTime-examTime>1800000){
+                    // You can login only after 30 mins of exam start time
+                    redirectUrl+="?error=5";
+                    throw new Exception();
+                }
 
                 UserExam userExam=userExamRepository.findUserExamByUser(exam_id,user.getId());
                 if(userExam==null){
