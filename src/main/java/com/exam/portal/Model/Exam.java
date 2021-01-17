@@ -185,4 +185,14 @@ public class Exam {
 		return questions_list.get(questions_list.size() - 1).getId().equals(question_id);
 	}
 
+	public int calculateScore(int correctAnswers,int incorrectAnswer){
+
+		int totalMarks=this.getMarksOfEachQuestion()*this.getQuestions().size();
+		int markScored=correctAnswers*this.getMarksOfEachQuestion();
+		int negativeMark=incorrectAnswer*this.getNegativeMarkOfEachQuestion();
+		int actualScore=markScored-negativeMark;
+
+		return actualScore;
+	}
+
 }

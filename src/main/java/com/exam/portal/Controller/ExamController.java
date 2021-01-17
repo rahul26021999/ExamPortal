@@ -2,11 +2,14 @@ package com.exam.portal.Controller;
 
 import com.exam.portal.Model.Exam;
 import com.exam.portal.Model.Organiser;
+import com.exam.portal.Model.UserExam;
 import com.exam.portal.OrganiserDetails;
 import com.exam.portal.Repository.ExamRepository;
+import com.exam.portal.Repository.UserAnswerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.context.IContext;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +29,9 @@ public class ExamController {
 
     @Autowired
     ExamRepository repo;
+
+    @Autowired
+    UserAnswerRepository userAnswerRepository;
 
     @GetMapping("/organiser/exams")
     public String showExams(Model model){
@@ -64,5 +71,28 @@ public class ExamController {
         Exam exam=repo.findById(id).get();
         model.addAttribute("exam",exam);
         return "organiser/exam/view";
+    }
+
+    @GetMapping("/organiser/exams/result")
+    public String viewResult(@RequestParam(name = "id",required = true ) Long id,Model model){
+        Exam exam=repo.findById(id).get();
+        model.addAttribute("exam",exam);
+        List<UserExam> examUsers=exam.getUserExam();
+        HashMap<Long,Integer> correctAnswers=new HashMap<>();
+        HashMap<Long,Integer> incorrectAnswers=new HashMap<>();
+        HashMap<Long,Integer> score=new HashMap<>();
+        for (UserExam userExam:examUsers) {
+            int correct=userAnswerRepository.findCorrectAnswersCount(userExam.getId());
+            int incorrect=userAnswerRepository.findInCorrectAnswersCount(userExam.getId());
+            correctAnswers.put(userExam.getId(),correct);
+            incorrectAnswers.put(userExam.getId(),incorrect);
+            score.put(userExam.getId(),exam.calculateScore(correct,incorrect));
+        }
+        model.addAttribute("examUsers",examUsers);
+        model.addAttribute("correctAnswers",correctAnswers);
+        model.addAttribute("incorrectAnswers",incorrectAnswers);
+        model.addAttribute("score",score);
+
+        return "organiser/result/list";
     }
 }

@@ -1,6 +1,7 @@
 package com.exam.portal.Controller;
 
 import com.exam.portal.OrganiserDetails;
+import com.exam.portal.Repository.ExamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,6 +18,9 @@ public class OrganiserController {
 
 	@Autowired
 	OrganiserRepository repo;
+
+	@Autowired
+	ExamRepository examRepository;
 
 	public static String LOGIN_ROUTE="redirect:/organiser/login";
 
@@ -45,7 +49,14 @@ public class OrganiserController {
 	}
 	
 	@GetMapping("organiser/dashboard")
-	public String dashboard() {
+	public String dashboard(Model model) {
+		int examcount=0;
+		Object user=SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if(user instanceof OrganiserDetails){
+			Organiser org = ((OrganiserDetails) user).getOrg();
+			examcount = examRepository.findByOrganiserId(org.getId()).size();
+		}
+		model.addAttribute("examcount",examcount);
 		return "organiser/dashboard";
 	}
 }

@@ -3,6 +3,7 @@ package com.exam.portal.Controller;
 import com.exam.portal.Model.*;
 import com.exam.portal.Repository.*;
 import com.exam.portal.Utils.RandomString;
+import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -83,16 +84,30 @@ public class UserController {
                     redirectUrl+="?error=1";
                     throw new Exception();
                 }
-
                 Long exam_id= Long.valueOf(examCode.split("-")[1]);
+                Exam exam=examRepository.findById(exam_id).get();
+                Long examTime = exam.getStartDate().getTime();
+
+
                 UserExam userExam=userExamRepository.findUserExamByUser(exam_id,user.getId());
                 if(userExam==null){
                     redirectUrl+="?error=2";
                     throw new Exception();
                 }else if(userExam.getPassword().equals(password)){
-                    session.setAttribute("user_id",user.getId());
+
+                    if(userExam.getStatus()==2){
+                        //Exam Already Submitted
+                        redirectUrl+="?error=3";
+                        throw new Exception();
+                    }
+                    //check If exam Started or not
+
+                    session.setAttribute("user_exam_id",userExam.getId());
                     session.setAttribute("exam_id",exam_id);
+                    userExam.setStatus(1);// Mark Present for that user
+                    userExamRepository.save(userExam);
                     return "redirect:/"+examCode+"/instruction";
+
                 }else{
                     redirectUrl+="?error=1";
                     throw new Exception();
@@ -150,20 +165,15 @@ public class UserController {
     private boolean isLoggedInForExam(HttpSession session, String examCode) {
 
         long exam_id= Long.parseLong(examCode.split("-")[1]);
-        Long session_user_id= (Long) session.getAttribute("user_id");
+        Long session_user_id= (Long) session.getAttribute("user_exam_id");
         Long session_exam_id= (Long) session.getAttribute("exam_id");
 
         //Check User is logged in For current Exam Code
         if(exam_id != session_exam_id)
             return false;
 
-        //Check User exists or not
-        if(userRepo.findById(session_user_id).isEmpty())
-            return false;
-
         //Check User Authorization for Current Exam
-        UserExam userExam=userExamRepository.findUserExamByUser(session_exam_id,session_user_id);
-        if(userExam==null)
+        if(userExamRepository.findById(session_user_id).isEmpty())
             return false;
 
         return true;
@@ -171,13 +181,22 @@ public class UserController {
 
     @GetMapping(value = {"/{examCode}/exam", "/{examCode}/exam/{question_no}"})
     public String showUserDashboard(HttpSession session, @PathVariable(name = "examCode")String examCode, Model model,@PathVariable(name = "question_no",required = false)Integer question_no){
+        String redirectUrl="redirect:/"+examCode+"/login";
         try{
             if(checkValidExamCode(examCode)){
                 if(isLoggedInForExam(session,examCode)){
-                    Long user_id= (Long) session.getAttribute("user_id");
-
+                    Long user_id= (Long) session.getAttribute("user_exam_id");
                     long exam_id= Long.parseLong(examCode.split("-")[1]);
+
+                    UserExam userExam=userExamRepository.findById(user_id).get();
+                    if(userExam.getStatus()==2){
+                        //Exam Already Submitted
+                        redirectUrl+="?error=3";
+                        throw new Exception();
+                    }
+
                     Exam exam=examRepository.findById(exam_id).get();
+
                     List<Question> all_questions = exam.getQuestions();
 
                     if(question_no==null)
@@ -198,6 +217,7 @@ public class UserController {
                     model.addAttribute("question",currentQuestion);
                     model.addAttribute("exam",exam);
                     return "user/dashboard";
+
                 }else{
                     throw new Exception();
                 }
@@ -206,7 +226,7 @@ public class UserController {
             }
         }
         catch (Exception e){
-            return "redirect:/"+examCode+"/login?"+e.getMessage();
+            return redirectUrl;
         }
     }
 
@@ -216,7 +236,7 @@ public class UserController {
             if(checkValidExamCode(examcode)){
                 if(isLoggedInForExam(session,examcode)){
 
-                    Long user_id= (Long) session.getAttribute("user_id");
+                    Long user_id= (Long) session.getAttribute("user_exam_id");
                     Long exam_id= Long.parseLong(examcode.split("-")[1]);
                     Exam exam = examRepository.findById(exam_id).get();
 
@@ -228,12 +248,17 @@ public class UserController {
                         if(userAnswer==null){
                             userAnswer = new UserAnswer();
                         }
-                        User user = userRepo.findById(user_id).get();
+                        UserExam userExam=userExamRepository.findById(user_id).get();
                         Question question=questionRepository.findById(question_id).get();
                         Option answer = optionRepository.findById(answer_id).get();
+                        boolean correct=false;
+                        if(question.getAnswer().getAnswer().getId().equals(answer.getId())){
+                            correct=true;
+                        }
                         userAnswer.setAnswer(answer);
-                        userAnswer.setUser(user);
+                        userAnswer.setUser(userExam);
                         userAnswer.setQuestions(question);
+                        userAnswer.setAnswerStatus(correct);
                         userAnswerRepository.save(userAnswer);
                     }
                     return "redirect:/"+examcode+"/exam/"+exam.getNextQuestionNo(question_id);
@@ -246,5 +271,55 @@ public class UserController {
         }catch (Exception e){
             return "redirect:/"+examcode+"/exam?"+e.getMessage();
         }
+    }
+
+    @GetMapping("{examcode}/final")
+    public String submitExam(@PathVariable(name = "examcode")String examCode,HttpSession session){
+        if(checkValidExamCode(examCode)){
+            if(isLoggedInForExam(session,examCode)){
+
+                Long user_id= (Long) session.getAttribute("user_exam_id");
+                Long exam_id= Long.parseLong(examCode.split("-")[1]);
+
+                UserExam userExam=userExamRepository.findById(user_id).get();
+                userExam.setStatus(2);
+                userExamRepository.save(userExam);
+
+                return "redirect:/"+examCode+"/result";
+            }
+            else{
+                return "/";
+            }
+        }else{
+            return "/";
+        }
+    }
+
+    @GetMapping("/{examcode}/result")
+    public String showResult(@PathVariable(name = "examcode")String examCode, HttpSession session, Model model)
+    {
+        if(checkValidExamCode(examCode)){
+            if(isLoggedInForExam(session,examCode)){
+                Boolean result= (Boolean) session.getAttribute("result");
+                Long user_id= (Long) session.getAttribute("user_exam_id");
+                Long exam_id= (Long) session.getAttribute("exam_id");
+                UserExam userExam=userExamRepository.findById(user_id).get();
+                if(result==true){
+                    Exam exam=examRepository.findById(exam_id).get();
+
+                    int correct=userAnswerRepository.findCorrectAnswersCount(user_id);
+                    int incorrect=userAnswerRepository.findInCorrectAnswersCount(user_id);
+                    int score=exam.calculateScore(correct,incorrect);
+
+                    model.addAttribute("exam",exam);
+                    model.addAttribute("correctAnswers",correct);
+                    model.addAttribute("incorrectAnswers",incorrect);
+                    model.addAttribute("score",score);
+
+                    return "user/result";
+                }
+            }
+        }
+        return "redirect:/";
     }
 }

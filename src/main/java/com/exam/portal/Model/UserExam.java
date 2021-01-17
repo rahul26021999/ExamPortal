@@ -13,6 +13,17 @@ public class UserExam {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "status",nullable = false)
+    private int status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     @ManyToOne(targetEntity = Exam.class)
     @JoinColumn(name= "exam_id", nullable=false)
     private Exam exams;
@@ -21,12 +32,12 @@ public class UserExam {
         this.exams=exam;
         this.user=user;
         this.password=password;
+        this.status=0;
     }
 
     public UserExam() {
 
     }
-
 
     public User getUser() {
         return user;

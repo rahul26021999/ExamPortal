@@ -20,7 +20,10 @@ public class UserAnswer {
 
     @OneToOne
     @JoinColumn(name= "user_id", nullable=false)
-    private User user;
+    private UserExam userexam;
+
+    @Column(name = "answer_status" ,nullable = false)
+    private Boolean answer_status;
 
     public Question getQuestions() {
         return questions;
@@ -38,11 +41,15 @@ public class UserAnswer {
         this.answer = answer;
     }
 
-    public User getUser() {
-        return user;
+    public UserExam getUser() {
+        return userexam;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setAnswerStatus(boolean answerStatus){
+        this.answer_status=answerStatus;
+    }
+
+    public void setUser(UserExam userexam) {
+        this.userexam = userexam;
     }
 }

@@ -17,11 +17,27 @@
 <body class="hold-transition login-page">
 <div class="login-box">
 
-    <div th:if="${param.error}" class="alert alert-warning alert-dismissible fade show" role="alert">
-        Invalid email and password
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
+    <div th:switch="${ param.error==null ? 0 : param.error.get(0) }">
+        <div th:case="'3'" class="alert alert-success alert-dismissible fade show" role="alert">
+            You have Already Submitted Exam
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div th:case="'2'" class="alert alert-warning alert-dismissible fade show" role="alert">
+            Invalid email and password
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div th:case="'0'">
+        </div>
+        <div th:case="*" class="alert alert-danger alert-dismissible fade show" role="alert">
+            Something Went Wrong
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
     </div>
 
     <div class="card card-outline card-primary">

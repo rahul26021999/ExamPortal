@@ -30,12 +30,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>View Exam</h1>
+                        <h1>Exam Result</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Show Exam</li>
+                            <li class="breadcrumb-item active">Show Result</li>
                         </ol>
                     </div>
                 </div>
@@ -44,110 +44,66 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered">
-                            <tr>
-                                <td>Exam Code : </td>
-                                <td th:text="${exam.getExamCode()}"></td>
-                            </tr>
-                            <tr>
-                                <td>Exam Title : </td>
-                                <td th:text="${exam.getTitle()}"></td>
-                            </tr>
-                            <tr>
-                                <td>Exam Description : </td>
-                                <td th:text="${exam.getDescription()}"></td>
-                            </tr>
-                            <tr>
-                                <td>Date Of Exam : </td>
-                                <td th:text="${exam.getStartDate()}"></td>
-                            </tr>
-                            <tr>
-                                <td>Exam Time : </td>
-                                <td th:text="${exam.getExamTime()}"></td>
-                            </tr>
-                            <tr>
-                                <td>Marks (Per Question) : </td>
-                                <td th:text="${exam.getMarksOfEachQuestion()}"></td>
-                            </tr>
-                            <tr>
-                                <td>Negative Marks (Per Question) : </td>
-                                <td th:text="${exam.getNegativeMarkOfEachQuestion()}"></td>
-                            </tr>
-                        </table>
+                    <div class="col-3">
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3 th:text="${examUsers.size()}"></h3>
+
+                                <p>Total Users</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-bag"></i>
+                            </div>
+                            <a th:href="@{/organiser/exams/view(id = ${exam.getId()})}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
                     </div>
-                    <div class="col-sm-12">
-                        <div class="card card-primary">
-                            <div class="card-header">
-                                <h3 class="card-title">Manage Questions</h3>
-                                <div class="card-tools">
-                                    <button type="button" class="btn" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                                    </button>
-                                </div>
+                    <div class="col-3">
+                        <div class="small-box bg-success">
+                            <div class="inner">
+                                <h3 th:text="${exam.getQuestions().size()}"></h3>
+
+                                <p>Total Questions</p>
                             </div>
-                            <div class="card-body">
-                                <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#modal-question">
-                                    Add Question
-                                </button>
-                                <ol>
-                                    <li th:each="question :${exam.getQuestions()}">
-                                        <div>
-                                            <span th:text="${question.getStatement()}"></span>
-                                            <a class="text-danger ml-3" th:href="@{/organiser/question/delete(exam_id=${exam.getId()},question_id=${question.getId()})}"><i class="fa fa-trash"></i></a>
-                                            <a class="text-success ml-3" ><i class="fa fa-pen"></i></a>
-                                        </div>
-                                        <ul>
-                                            <li th:each="option : ${question.getOptions()}">
-                                                <span th:text="${option.getOption()}"></span>
-                                            </li>
-                                        </ul>
-                                        <div class="text-danger">Answer : <span th:text="${question.getAnswer().getAnswer().getOption()}"></span></div>
-                                    </li>
-                                </ol>
+                            <div class="icon">
+                                <i class="ion ion-bag"></i>
                             </div>
-                            <div class="card-footer">
-                            </div>
+                            <a th:href="@{/organiser/exams/view(id = ${exam.getId()})}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <div class="col-sm-12">
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Manage Users</h3>
+                                <h3 class="card-title">Users Score</h3>
                                 <div class="card-tools">
                                     <button type="button" class="btn" data-card-widget="collapse"><i class="fas fa-minus"></i>
                                     </button>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form th:action="@{/organiser/user/add}" method="post" class="form-inline">
-                                    <div class="form-group p-2">
-                                        <label for="name" class="pr-2">Name:</label>
-                                        <input type="text" id="name" class="form-control" name="name">
-                                    </div>
-                                    <input type="hidden" name="exam_id" th:value="${exam.getId()}">
-                                    <div class="form-group p-2">
-                                        <label for="email" class="pr-2">Email:</label>
-                                        <input type="text" id="email" class="form-control" name="email">
-                                    </div>
-                                    <div class="form-group p-2">
-                                        <input type="submit" class="btn btn-primary" name="submit" value="Add User">
-                                    </div>
-                                </form>
+                                <div>
+                                    <span class="badge badge-primary">Attempted</span>
+                                    <span class="badge badge-success">Correct</span>
+                                    <span class="badge badge-danger">Incorrect</span>
+                                </div>
                                 <table id="examList" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
                                         <th>Name</th>
                                         <th>Email</th>
-                                        <th>Password</th>
-                                        <th>Actions</th>
+                                        <th>Result</th>
+                                        <th>Score</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="userExam: ${exam.getUserExam()}">
-                                        <td th:text="${userExam.getUser().getName()}"></td>
-                                        <td th:text="${userExam.getUser().getEmail()}"></td>
-                                        <td th:text="${userExam.getPassword()}"></td>
-                                        <td><a th:href="@{/organsier/user/delete(id=${userExam.getId()})}"><i class="fa fa-trash"></i></a></td>
+                                    <tr th:each="examUser: ${examUsers}">
+                                        <td th:text="${examUser.getUser().getName()}"></td>
+                                        <td th:text="${examUser.getUser().getEmail()}"></td>
+                                        <td>
+                                            <span th:text="${correctAnswers[examUser.getId()]+incorrectAnswers[examUser.getId()]}" class="badge badge-primary"></span>
+                                            <span th:text="${correctAnswers[examUser.getId()]}" class="badge badge-success"></span>
+                                            <span th:text="${incorrectAnswers[examUser.getId()]}" class="badge badge-danger"></span>
+                                        </td>
+                                        <td th:text="${score[examUser.getId()]}"></td>
                                     </tr>
 
                                     </tbody>
