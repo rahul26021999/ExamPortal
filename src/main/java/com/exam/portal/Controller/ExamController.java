@@ -6,6 +6,7 @@ import com.exam.portal.Model.UserExam;
 import com.exam.portal.OrganiserDetails;
 import com.exam.portal.Repository.ExamRepository;
 import com.exam.portal.Repository.UserAnswerRepository;
+import com.exam.portal.Repository.UserExamRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class ExamController {
 
     @Autowired
     UserAnswerRepository userAnswerRepository;
+
+    @Autowired
+    UserExamRepository userExamRepository;
 
     @GetMapping("/organiser/exams")
     public String showExams(Model model){
@@ -78,6 +82,13 @@ public class ExamController {
         Exam exam=repo.findById(id).get();
         model.addAttribute("exam",exam);
         List<UserExam> examUsers=exam.getUserExam();
+
+        int presentCount=userExamRepository.findPresentUsersCount(exam.getId());
+        int adbsetCount=userExamRepository.findAbsentUsersCount(exam.getId());
+
+        model.addAttribute("presentCount",presentCount);
+        model.addAttribute("adbsetCount",adbsetCount);
+
         HashMap<Long,Integer> correctAnswers=new HashMap<>();
         HashMap<Long,Integer> incorrectAnswers=new HashMap<>();
         HashMap<Long,Integer> score=new HashMap<>();

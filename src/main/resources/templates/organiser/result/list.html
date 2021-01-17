@@ -48,8 +48,31 @@
                         <div class="small-box bg-info">
                             <div class="inner">
                                 <h3 th:text="${examUsers.size()}"></h3>
-
                                 <p>Total Users</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-bag"></i>
+                            </div>
+                            <a th:href="@{/organiser/exams/view(id = ${exam.getId()})}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="small-box bg-warning">
+                            <div class="inner">
+                                <h3 th:text="${presentCount}"></h3>
+                                <p>Total Present Users</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-bag"></i>
+                            </div>
+                            <a th:href="@{/organiser/exams/view(id = ${exam.getId()})}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="small-box bg-danger">
+                            <div class="inner">
+                                <h3 th:text="${adbsetCount}"></h3>
+                                <p>Total Absent Users</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-bag"></i>
@@ -61,7 +84,6 @@
                         <div class="small-box bg-success">
                             <div class="inner">
                                 <h3 th:text="${exam.getQuestions().size()}"></h3>
-
                                 <p>Total Questions</p>
                             </div>
                             <div class="icon">

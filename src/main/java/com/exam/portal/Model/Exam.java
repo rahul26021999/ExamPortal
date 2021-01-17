@@ -195,4 +195,23 @@ public class Exam {
 		return actualScore;
 	}
 
+	public boolean isOver(){
+		long time=this.getExamTime()*60*1000;
+		long currentTime=new Date().getTime();
+		long examTime =this.getStartDate().getTime();
+		return examTime+time <= currentTime;
+	}
+
+	public String getExamStatus(){
+		long time=this.getExamTime()*60*1000;
+		long currentTime=new Date().getTime();
+		long examTime =this.getStartDate().getTime();
+		if(isOver()){
+			return "Exam Over";
+		} else if(examTime < currentTime && currentTime < examTime + time){
+			return "Started";
+		}else{
+			return "Not Started";
+		}
+	}
 }

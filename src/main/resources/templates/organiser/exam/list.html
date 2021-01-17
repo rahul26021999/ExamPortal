@@ -59,6 +59,7 @@
                                         <th>Questions</th>
                                         <th>Users</th>
                                         <th>Start Date</th>
+                                        <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                     </thead>
@@ -71,7 +72,12 @@
                                         <td th:text="${exam.getQuestions().size()}"></td>
                                         <td th:text="${exam.getUserExam().size()}"></td>
                                         <td th:text="${exam.getStartDate()}" />
-                                        <td></td>
+                                        <td th:text="${exam.getExamStatus()}"></td>
+                                        <td>
+                                            <span th:if="${exam.isOver()}" class="badge badge-primary">
+                                                <a class="text-white" th:href="@{/organiser/exams/result(id=${exam.getId()})}">View Result</a>
+                                            </span>
+                                        </td>
                                     </tr>
 
                                     </tbody>

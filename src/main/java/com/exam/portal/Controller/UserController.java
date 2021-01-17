@@ -308,28 +308,32 @@ public class UserController {
     @GetMapping("/{examcode}/result")
     public String showResult(@PathVariable(name = "examcode")String examCode, HttpSession session, Model model)
     {
-        if(checkValidExamCode(examCode)){
-            if(isLoggedInForExam(session,examCode)){
-                Boolean result= (Boolean) session.getAttribute("result");
-                Long user_id= (Long) session.getAttribute("user_exam_id");
-                Long exam_id= (Long) session.getAttribute("exam_id");
-                UserExam userExam=userExamRepository.findById(user_id).get();
-                if(result==true){
-                    Exam exam=examRepository.findById(exam_id).get();
+      try{
+          if(checkValidExamCode(examCode)){
+              if(isLoggedInForExam(session,examCode)){
+                  Boolean result= (Boolean) session.getAttribute("result");
+                  Long user_id= (Long) session.getAttribute("user_exam_id");
+                  Long exam_id= (Long) session.getAttribute("exam_id");
+                  UserExam userExam=userExamRepository.findById(user_id).get();
+                  if(result==true){
+                      Exam exam=examRepository.findById(exam_id).get();
 
-                    int correct=userAnswerRepository.findCorrectAnswersCount(user_id);
-                    int incorrect=userAnswerRepository.findInCorrectAnswersCount(user_id);
-                    int score=exam.calculateScore(correct,incorrect);
+                      int correct=userAnswerRepository.findCorrectAnswersCount(user_id);
+                      int incorrect=userAnswerRepository.findInCorrectAnswersCount(user_id);
+                      int score=exam.calculateScore(correct,incorrect);
 
-                    model.addAttribute("exam",exam);
-                    model.addAttribute("correctAnswers",correct);
-                    model.addAttribute("incorrectAnswers",incorrect);
-                    model.addAttribute("score",score);
+                      model.addAttribute("exam",exam);
+                      model.addAttribute("correctAnswers",correct);
+                      model.addAttribute("incorrectAnswers",incorrect);
+                      model.addAttribute("score",score);
 
-                    return "user/result";
-                }
-            }
-        }
-        return "redirect:/";
+                      return "user/result";
+                  }
+              }
+          }
+      }catch(Exception e){
+          return "redirect:/";
+      }
+      return "redirect:/";
     }
 }
