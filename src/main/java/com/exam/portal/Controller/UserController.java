@@ -160,11 +160,27 @@ public class UserController {
 
     @GetMapping("{examcode}/instruction")
     public String showInstructionPage(Model model,@PathVariable(name = "examcode")String examCode,HttpSession session){
+        String redirectUrl="redirect:/"+examCode+"/login";
         try{
             if(checkValidExamCode(examCode)){
                 if(isLoggedInForExam(session,examCode)){
+                    Long user_id= (Long) session.getAttribute("user_exam_id");
                     long exam_id= Long.parseLong(examCode.split("-")[1]);
                     Exam exam=examRepository.findById(exam_id).get();
+
+                    UserExam userExam=userExamRepository.findById(user_id).get();
+                    if(userExam.getStatus()==2){
+                        //Exam Already Submitted
+                        redirectUrl+="?error=3";
+                        throw new Exception();
+                    }
+
+                    if(exam.isOver()){
+                        //Exam Over
+                        redirectUrl="redirect:/"+examCode+"/final";
+                        throw new Exception();
+                    }
+
                     model.addAttribute("exam",exam);
                     return "user/instruction";
                 }else{
@@ -174,7 +190,7 @@ public class UserController {
                 throw new Exception();
             }
         }catch (Exception e){
-            return "redirect:/"+examCode+"/login";
+            return redirectUrl;
         }
     }
 
