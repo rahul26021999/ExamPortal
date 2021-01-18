@@ -33,7 +33,7 @@
                                        <div th:if="${answers[exam.getQuestions().get(i).getId()]}" class="text-center text-bold bg-success p-2 mt-2">
                                            <a th:href="@{'/'+${exam.getExamCode()}+'/exam/'+${i+1}}" th:text="${i+1}" class="d-block"></a>
                                        </div>
-                                       <div th:unless="${answers[exam.getQuestions().get(i).getId()]}" class="text-center text-bold bg-gray-light p-2 mt-2">
+                                       <div th:unless="${answers[exam.getQuestions().get(i).getId()]}" class="text-center text-bold bg-danger p-2 mt-2">
                                            <a th:href="@{'/'+${exam.getExamCode()}+'/exam/'+${i+1}}" th:text="${i+1}" class="d-block"></a>
                                        </div>
                                    </div>
