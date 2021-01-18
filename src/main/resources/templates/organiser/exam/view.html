@@ -92,16 +92,16 @@
                                 <ol>
                                     <li th:each="question :${exam.getQuestions()}">
                                         <div>
-                                            <span th:text="${question.getStatement()}"></span>
+                                            <span th:text="${question.getStatement()}" th:id="'question_'+${question.getId()}"></span>
                                             <a class="text-danger ml-3" th:href="@{/organiser/question/delete(exam_id=${exam.getId()},question_id=${question.getId()})}"><i class="fa fa-trash"></i></a>
-                                            <a class="text-success ml-3" ><i class="fa fa-pen"></i></a>
+                                            <a class="text-success ml-3"><i class="fa fa-pen" data-toggle="modal" data-target="#modal-edit-question" th:onclick="'editQuestion('+${question.getId()}+')'"></i></a>
                                         </div>
                                         <ul>
                                             <li th:each="option : ${question.getOptions()}">
-                                                <span th:text="${option.getOption()}"></span>
+                                                <span th:text="${option.getOption()}" th:class="'options_'+${question.getId()}"></span>
                                             </li>
                                         </ul>
-                                        <div class="text-danger">Answer : <span th:text="${question.getAnswer().getAnswer().getOption()}"></span></div>
+                                        <div class="text-danger">Answer : <span th:id="'answer_'+${question.getId()}" th:text="${question.getAnswer().getAnswer().getOption()}"></span></div>
                                     </li>
                                 </ol>
                             </div>
@@ -175,14 +175,14 @@
                                 <div class="modal-body">
                                     <input type="hidden" class="form-control" name="exam_id" th:value="${exam.getId()}">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" name="question" placeholder="Enter your question">
+                                        <input type="text" class="form-control" name="question" placeholder="Enter your question" required>
                                     </div>
                                     <div class="row form-group">
                                         <div class="col-sm-1">
                                             <input type="radio" name="answer" value="1" checked="checked">
                                         </div>
                                         <div class="col-sm-11">
-                                            <input type="text" class="form-control" name="option[]" placeholder="Option 1">
+                                            <input type="text" class="form-control" name="option[]" placeholder="Option 1" required>
                                         </div>
                                     </div>
                                     <div class="row form-group">
@@ -190,7 +190,7 @@
                                             <input type="radio" name="answer" value="2">
                                         </div>
                                         <div class="col-sm-11">
-                                            <input type="text" class="form-control" name="option[]" placeholder="Option 2">
+                                            <input type="text" class="form-control" name="option[]" placeholder="Option 2" required>
                                         </div>
                                     </div>
                                     <div class="row form-group">
@@ -198,7 +198,7 @@
                                             <input type="radio" name="answer" value="3">
                                         </div>
                                         <div class="col-sm-11">
-                                            <input type="text" class="form-control" name="option[]" placeholder="Option 3">
+                                            <input type="text" class="form-control" name="option[]" placeholder="Option 3" required>
                                         </div>
                                     </div>
                                     <div class="row form-group">
@@ -206,7 +206,65 @@
                                             <input type="radio" name="answer" value="4">
                                         </div>
                                         <div class="col-sm-11">
-                                            <input type="text" class="form-control" name="option[]" placeholder="Option 4">
+                                            <input type="text" class="form-control" name="option[]" placeholder="Option 4" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <div class="modal fade" id="modal-edit-question">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form th:action="@{/organiser/question/edit}" method="post">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Add Question</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" class="form-control" name="question_id" id="edit_question_id">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="question" id="edit_question" placeholder="Enter your question" required>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-1">
+                                            <input type="radio" name="answer" value="1" checked="checked">
+                                        </div>
+                                        <div class="col-sm-11">
+                                            <input type="text" class="form-control" id="edit_option_1" name="option[]" placeholder="Option 1" required>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-1">
+                                            <input type="radio" name="answer" value="2">
+                                        </div>
+                                        <div class="col-sm-11">
+                                            <input type="text" class="form-control" id="edit_option_2" name="option[]" placeholder="Option 2" required>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-1">
+                                            <input type="radio" name="answer" value="3">
+                                        </div>
+                                        <div class="col-sm-11">
+                                            <input type="text" class="form-control" id="edit_option_3" name="option[]" placeholder="Option 3" required>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-1">
+                                            <input type="radio" name="answer" value="4">
+                                        </div>
+                                        <div class="col-sm-11">
+                                            <input type="text" class="form-control" id="edit_option_4" name="option[]" placeholder="Option 4" required>
                                         </div>
                                     </div>
                                 </div>
@@ -224,22 +282,7 @@
             </div>
         </section>
     </div>
-
-    <!--                            <div th:case="3" class="row">-->
-    <!--                                <div class="form-group">-->
-    <!--                                    <label for="usersList">UserList</label>-->
-    <!--                                    <div class="input-group">-->
-    <!--                                        <div class="custom-file">-->
-    <!--                                            <input type="file" class="custom-file-input" id="usersList">-->
-    <!--                                            <label class="custom-file-label" for="usersList">Choose file</label>-->
-    <!--                                        </div>-->
-    <!--                                    </div>-->
-    <!--                                </div>-->
-    <!--                            </div>-->
-
-
     <div th:replace="organiser/fragments/navbar :: footer"></div>
-
 
 </div>
 <!-- ./wrapper -->
@@ -256,6 +299,15 @@
 <script src="/webjars/AdminLTE/3.0.0/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE -->
 <script src="/webjars/AdminLTE/3.0.0/dist/js/adminlte.js"></script>
-
+<script>
+    function editQuestion(id){
+        $("#edit_question_id").val(id);
+        $("#edit_question").val($('#question_'+id).html());
+        $("#edit_option_1").val($('.options_'+id).eq(0).html());
+        $("#edit_option_2").val($('.options_'+id).eq(1).html());
+        $("#edit_option_3").val($('.options_'+id).eq(2).html());
+        $("#edit_option_4").val($('.options_'+id).eq(3).html());
+    }
+</script>
 </body>
 </html>

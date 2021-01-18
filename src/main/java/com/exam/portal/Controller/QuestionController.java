@@ -51,6 +51,29 @@ public class QuestionController {
 
         return "redirect:/organiser/exams/view?id="+exam_id;
     }
+    @PostMapping("/organiser/question/edit")
+    public String editQuestion(@RequestParam(name = "question")String question, @RequestParam(name = "option[]") List<String> options, @RequestParam(name="question_id")Long question_id,@RequestParam(name = "answer")Integer answer){
+
+        Question ques=repo.findById(question_id).get();
+        ques.setStatement(question);
+        repo.save(ques);
+
+        List<Option> ops = ques.getOptions();
+        ops.get(0).setOption(options.get(0));
+        optionRepo.save(ops.get(0));
+        ops.get(1).setOption(options.get(1));
+        optionRepo.save(ops.get(1));
+        ops.get(2).setOption(options.get(2));
+        optionRepo.save(ops.get(2));
+        ops.get(3).setOption(options.get(3));
+        optionRepo.save(ops.get(3));
+
+        Answer ans = ques.getAnswer();
+        ans.setAnswer(ops.get(answer-1));
+        answerRepo.save(ans);
+
+        return "redirect:/organiser/exams/view?id="+ques.getExams().getId();
+    }
 
     @GetMapping("/organiser/question/delete")
     public String deleteQuestion(@RequestParam(name = "question_id") Long question_id,@RequestParam(name="exam_id")Long exam_id){
