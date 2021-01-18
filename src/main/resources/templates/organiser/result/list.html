@@ -102,7 +102,7 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div>
+                                <div style="font-size: 20px;">
                                     <span class="badge badge-primary">Attempted</span>
                                     <span class="badge badge-success">Correct</span>
                                     <span class="badge badge-danger">Incorrect</span>
@@ -112,6 +112,7 @@
                                     <tr>
                                         <th>Name</th>
                                         <th>Email</th>
+                                        <th>Present/Absent</th>
                                         <th>Result</th>
                                         <th>Score</th>
                                     </tr>
@@ -120,6 +121,10 @@
                                     <tr th:each="examUser: ${examUsers}">
                                         <td th:text="${examUser.getUser().getName()}"></td>
                                         <td th:text="${examUser.getUser().getEmail()}"></td>
+                                        <td th:switch="${examUser.getStatus()}">
+                                            <span th:case="'0'" class="badge badge-danger">Absent</span>
+                                            <span th:case="*" class="badge badge-success">Present</span>
+                                        </td>
                                         <td>
                                             <span th:text="${correctAnswers[examUser.getId()]+incorrectAnswers[examUser.getId()]}" class="badge badge-primary"></span>
                                             <span th:text="${correctAnswers[examUser.getId()]}" class="badge badge-success"></span>
