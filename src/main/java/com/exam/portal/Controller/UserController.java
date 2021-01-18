@@ -212,6 +212,11 @@ public class UserController {
                     }
                     Exam exam=examRepository.findById(exam_id).get();
 
+                    if(exam.isOver()){
+                        //Exam Over
+                        redirectUrl="redirect:/"+examCode+"/final";
+                        throw new Exception();
+                    }
                     if(!exam.isStarted()){
                         //Exam Not started yet
                         redirectUrl="redirect:/"+examCode+"/instruction";
@@ -254,6 +259,8 @@ public class UserController {
 
     @PostMapping("{examcode}/submit")
     public String saveAnswers(HttpSession session,@PathVariable(name = "examcode")String examcode,@RequestParam(name = "answer_id",required = false)Long answer_id,@RequestParam(name = "question_id")Long question_id){
+
+        String redirectUrl="redirect:/"+examcode+"/exam";
         try{
             if(checkValidExamCode(examcode)){
                 if(isLoggedInForExam(session,examcode)){
@@ -261,6 +268,10 @@ public class UserController {
                     Long user_id= (Long) session.getAttribute("user_exam_id");
                     Long exam_id= Long.parseLong(examcode.split("-")[1]);
                     Exam exam = examRepository.findById(exam_id).get();
+
+                    if(exam.isOver()){
+                        throw new Exception();
+                    }
 
                     UserAnswer userAnswer = userAnswerRepository.findByUserQuestion(user_id, question_id);
                     if(answer_id==null){
@@ -291,7 +302,7 @@ public class UserController {
                 throw new Exception();
             }
         }catch (Exception e){
-            return "redirect:/"+examcode+"/exam?"+e.getMessage();
+            return redirectUrl;
         }
     }
 
