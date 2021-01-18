@@ -177,7 +177,7 @@ public class Exam {
 			return 1;
 			//Last Question
 		}else{
-			return i+1;
+			return i+2;
 		}
 	}
 	public boolean isLastQuestion(Long question_id){

@@ -226,6 +226,7 @@ public class UserController {
                     model.addAttribute("answers",answers);
                     model.addAttribute("question",currentQuestion);
                     model.addAttribute("exam",exam);
+                    model.addAttribute("question_no",question_no);
                     return "user/dashboard";
 
                 }else{
@@ -289,11 +290,11 @@ public class UserController {
             if(isLoggedInForExam(session,examCode)){
 
                 Long user_id= (Long) session.getAttribute("user_exam_id");
-                Long exam_id= Long.parseLong(examCode.split("-")[1]);
 
                 UserExam userExam=userExamRepository.findById(user_id).get();
                 userExam.setStatus(2);
                 userExamRepository.save(userExam);
+                session.setAttribute("result",true);
 
                 return "redirect:/"+examCode+"/result";
             }

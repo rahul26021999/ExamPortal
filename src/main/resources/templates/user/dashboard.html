@@ -23,11 +23,13 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-3">
-                       <div class="card">
+                       <div class="card mt-2">
                            <div class="card-body">
                                <div class="row">
+                                   <div class="col-12 text-center text-gray text-bold" >
+                                       Question palette
+                                   </div>
                                    <div class="col-3" th:each="i: ${#numbers.sequence(0,exam.getQuestions().size()-1)}">
-
                                        <div th:if="${answers[exam.getQuestions().get(i).getId()]}" class="text-center text-bold bg-success p-2 mt-2">
                                            <a th:href="@{'/'+${exam.getExamCode()}+'/exam/'+${i+1}}" th:text="${i+1}" class="d-block"></a>
                                        </div>
@@ -40,10 +42,13 @@
                        </div>
                     </div>
                     <div class="col-sm-9">
-                        <div class="card">
+                        <div class="card mt-2">
                             <div class="card-body">
                                 <form th:action="@{'/' + ${exam.getExamCode()} + '/submit'}" method="post">
-                                    <div th:text="${question.getStatement()}" class="mb-2 text-bold"></div>
+                                    <div>
+                                        <div th:text="'Question '+${question_no}" class="text-bold text-primary mb-2 mr-1"></div>
+                                        <div th:text="${question.getStatement()}" class="mb-2 text-bold"></div>
+                                    </div>
                                     <input type="hidden" name="question_id" th:value="${question.getId()}">
                                     <div class="form-group">
                                         <div class="form-check" th:each="option : ${question.getOptions()}">

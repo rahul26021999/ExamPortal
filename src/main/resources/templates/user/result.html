@@ -29,7 +29,25 @@
                             </div>
                             <div class="card-body">
                                 <div>
-
+                                    <div>
+                                        <h1 class="text-bold text-center">You have Scored <span th:text="${score}" class="text-success text-bold"></span> Marks</h1>
+                                    </div>
+                                    <h3>
+                                        <span class="badge badge-secondary" th:text="${exam.getQuestions().size()}"></span>
+                                        <span class="text-bold">Total Question</span>
+                                    </h3>
+                                    <h3>
+                                        <span class="badge badge-primary" th:text="${incorrectAnswers+correctAnswers}"></span>
+                                        <span class="text-bold">Attempted Question</span>
+                                    </h3>
+                                    <h3>
+                                        <span class="badge badge-success" th:text="${correctAnswers}"></span>
+                                        <span class="text-bold"> Correct Answers</span>
+                                    </h3>
+                                    <h3>
+                                        <span class="badge badge-danger" th:text="${incorrectAnswers}"></span>
+                                        <span class="text-bold"> Incorrect Answers</span>
+                                    </h3>
                                 </div>
                             </div>
                         </div>
