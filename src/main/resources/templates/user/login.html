@@ -61,6 +61,12 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
+                            <div th:case="'6'" class="alert alert-danger alert-dismissible fade show" role="alert">
+                                Exam is Over. Sorry you are Late
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
                             <div th:case="'0'">
                             </div>
                             <div th:case="*" class="alert alert-danger alert-dismissible fade show" role="alert">

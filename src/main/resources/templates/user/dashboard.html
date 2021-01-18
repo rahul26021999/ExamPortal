@@ -22,6 +22,10 @@
         <div class="content">
             <div class="container">
                 <div class="row">
+                    <div class="col-sm-12 m-1">
+                        <input type="hidden" id="remainingExamTime" th:value="${exam.getRemainingTime()}">
+                        <div class="countdown text-right" style="font-size: 18px;"><b>Time Remaining :</b> <span id="timer"></span></div>
+                    </div>
                     <div class="col-sm-3">
                        <div class="card mt-2">
                            <div class="card-body">
@@ -94,5 +98,28 @@
 <script src="/webjars/AdminLTE/3.0.0/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/webjars/AdminLTE/3.0.0/dist/js/demo.js"></script>
+
+<script>
+    // Set the date we're counting down to
+    var remainingExamTime=$('#remainingExamTime').val()/1000;
+    calculateTime(remainingExamTime);
+    // Update the count down every 1 second
+    setInterval(function() {
+       calculateTime(--remainingExamTime);
+    }, 1000);
+
+    function calculateTime(time)
+    {
+        var minRemaining=Math.floor(time/60);
+        var secRemaining=Math.floor(time%60);
+        var text=minRemaining+" mins "+secRemaining+" sec";
+        $("#timer").html(text);
+        if(Math.floor(time)<=0){
+            console.log("hello clicked");
+            var href = $("#submitButton").attr('href');
+            window.location.href = href;
+        }
+    }
+</script>
 </body>
 </html>

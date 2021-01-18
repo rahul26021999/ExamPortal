@@ -21,7 +21,7 @@
                 <!-- Right navbar links -->
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item" th:if="${#httpServletRequest.requestURI.contains('exam')}">
-                        <a class="btn btn-success" data-widget="fullscreen" th:href="@{'/'+${exam.getExamCode()}+'/final'}" role="button">
+                        <a class="btn btn-success" id="submitButton" th:href="@{'/'+${exam.getExamCode()}+'/final'}">
                             Submit Exam
                         </a>
                     </li>

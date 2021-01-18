@@ -88,6 +88,11 @@ public class UserController {
                 Exam exam=examRepository.findById(exam_id).get();
                 Long currentTime=new Date().getTime();
                 Long examTime = exam.getStartDate().getTime();
+                if(exam.isOver()){
+                    //Exam is over Sorry you are late
+                    redirectUrl+="?error=6";
+                    throw new Exception();
+                }
                 if(examTime-currentTime>900000){
                     // You can login only before 15 mins of exam start time
                     redirectUrl+="?error=4";
@@ -205,8 +210,13 @@ public class UserController {
                         redirectUrl+="?error=3";
                         throw new Exception();
                     }
-
                     Exam exam=examRepository.findById(exam_id).get();
+
+                    if(!exam.isStarted()){
+                        //Exam Not started yet
+                        redirectUrl="redirect:/"+examCode+"/instruction";
+                        throw new Exception();
+                    }
 
                     List<Question> all_questions = exam.getQuestions();
 

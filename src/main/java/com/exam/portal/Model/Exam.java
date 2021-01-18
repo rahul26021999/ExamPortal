@@ -201,6 +201,15 @@ public class Exam {
 		long examTime =this.getStartDate().getTime();
 		return examTime+time <= currentTime;
 	}
+	public boolean isStarted(){
+		long time=this.getExamTime()*60*1000;
+		long currentTime=new Date().getTime();
+		long examTime =this.getStartDate().getTime();
+		if(examTime < currentTime && currentTime < examTime + time)
+			return true;
+		else
+			return false;
+	}
 
 	public String getExamStatus(){
 		long time=this.getExamTime()*60*1000;
@@ -213,5 +222,15 @@ public class Exam {
 		}else{
 			return "Not Started";
 		}
+	}
+	public  long getRemainingTime(){
+		long currentTime=new Date().getTime();
+		long examTime =this.getStartDate().getTime();
+		long time=this.getExamTime()*60*1000;
+		return examTime+time-currentTime;
+	}
+
+	public long getStartTimeInMilliseconds(){
+		return this.getStartDate().getTime()-new Date().getTime();
 	}
 }
