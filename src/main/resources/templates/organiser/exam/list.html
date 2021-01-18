@@ -77,6 +77,7 @@
                                             <span th:if="${exam.isOver()}" class="badge badge-primary">
                                                 <a class="text-white" th:href="@{/organiser/exams/result(id=${exam.getId()})}">View Result</a>
                                             </span>
+                                            <a class="text-success ml-3" th:href="@{/organiser/exams/edit(id=${exam.getId()})}"><i class="fa fa-pen"></i></a>
                                         </td>
                                     </tr>
 

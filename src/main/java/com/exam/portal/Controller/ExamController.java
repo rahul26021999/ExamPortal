@@ -7,6 +7,7 @@ import com.exam.portal.OrganiserDetails;
 import com.exam.portal.Repository.ExamRepository;
 import com.exam.portal.Repository.UserAnswerRepository;
 import com.exam.portal.Repository.UserExamRepository;
+import org.dom4j.rule.Mode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,20 @@ public class ExamController {
             return OrganiserController.LOGIN_ROUTE;
 
         }
+    }
+    @GetMapping("/organiser/exams/edit")
+    public String editExam(@RequestParam(name = "id")Long exam_id, Model model){
+        Exam oldExam=repo.findById(exam_id).get();
+        model.addAttribute("oldExam",oldExam);
+        return "organiser/exam/edit";
+    }
+
+    @PostMapping("/organiser/exams/edit")
+    public String editSaveExam(Exam exam){
+        Exam exam1=repo.findById(exam.getId()).get();
+        exam.setOrganisers(exam1.getOrganisers());
+        repo.save(exam);
+        return "redirect:/organiser/exams";
     }
 
     @GetMapping("/organiser/exams/view")
