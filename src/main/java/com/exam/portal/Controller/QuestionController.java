@@ -78,8 +78,9 @@ public class QuestionController {
     @GetMapping("/organiser/question/delete")
     public String deleteQuestion(@RequestParam(name = "question_id") Long question_id,@RequestParam(name="exam_id")Long exam_id){
         Question q=repo.findById(question_id).get();
-//        answerRepo.deleteById(q.getAnswer().getId());
-//        optionRepo.deleteAll(q.getOptions());
+        Answer answer = answerRepo.findById(q.getAnswer().getId()).get();
+        answerRepo.delete(answer);
+        optionRepo.deleteAll(q.getOptions());
         repo.delete(q);
         return "redirect:/organiser/exams/view?id="+exam_id;
     }
