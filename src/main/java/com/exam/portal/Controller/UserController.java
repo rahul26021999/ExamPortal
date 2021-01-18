@@ -101,7 +101,8 @@ public class UserController {
 
                 UserExam userExam=userExamRepository.findUserExamByUser(exam_id,user.getId());
                 if(userExam==null){
-                    redirectUrl+="?error=2";
+                    // Invalid Email or password
+                    redirectUrl+="?error=1";
                     throw new Exception();
                 }else if(userExam.getPassword().equals(password)){
 
@@ -336,5 +337,10 @@ public class UserController {
           return "redirect:/";
       }
       return "redirect:/";
+    }
+
+    @PostMapping("goto/exam")
+    public  String goToExam(@RequestParam(name = "examcode")String examcode){
+        return"redirect:/"+examcode+ "/login";
     }
 }

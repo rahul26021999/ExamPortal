@@ -2,91 +2,114 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Organiser | Log in</title>
-  <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Organiser | Login Page</title>
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="/webjars/AdminLTE/plugins/fontawesome-free/css/all.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- icheck bootstrap -->
-  <link rel="stylesheet" href="/webjars/AdminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="/webjars/AdminLTE/dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="/webjars/AdminLTE/3.0.0/plugins/fontawesome-free/css/all.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/webjars/AdminLTE/3.0.0/dist/css/adminlte.min.css">
 </head>
-<body class="hold-transition login-page">
-<div class="login-box">
-  <div class="login-logo">
-    <a th:href="@{/}"><b>JNU</b> E-Portal</a>
-  </div>
+<body class="hold-transition layout-top-nav">
+<div class="wrapper">
 
-  <div th:if="${param.error}" class="alert alert-warning alert-dismissible fade show" role="alert">
-    Invalid username and password.
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
+  <div th:replace="fragments/header :: header"></div>
 
-  <div th:if="${param.logout}" class="alert alert-success alert-dismissible fade show" role="alert">
-    You have been logged out.
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-
-  <!-- /.login-logo -->
-  <div class="card">
-    <div class="card-body login-card-body">
-      <p class="login-box-msg">Sign in to see your Dashboard</p>
-
-      <form th:action="@{/organiser/login}" method="post">
-        <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email" name="email" required>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
-            </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password" name="password" required>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-        </div>
+  <style>
+    .main-bg{
+      background-image: url("https://cache.careers360.mobi/media/presets/860X430/article_images/2020/11/2/RMAT-2021.jpg");
+      background-position: center; /* Center the image */
+      background-repeat: no-repeat; /* Do not repeat the image */
+      background-size: cover;
+      position: relative;/* Resize the background image to cover the entire container */
+    }
+    .mycard{
+      margin-top: 100px;
+      background-color: rgb(255,255,255,0.9);
+    }
+  </style>
+  <div class="content-wrapper main-bg">
+    <div class="content">
+      <div class="container">
         <div class="row">
-          <div class="col-12">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+          <div class="col-sm-4"></div>
+          <div class="col-sm-4">
+            <div th:if="${param.error}" class="alert alert-warning alert-dismissible fade show mt-2" role="alert">
+              Invalid username and password.
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div th:if="${param.logout}" class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+              You have been logged out.
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <!-- /.login-logo -->
+            <div class="card mycard">
+              <div class="card-body login-card-body">
+                <p class="login-box-msg">Sign in to see your Dashboard</p>
+
+                <form th:action="@{/organiser/login}" method="post">
+                  <div class="input-group mb-3">
+                    <input type="email" class="form-control" placeholder="Email" name="email" required>
+                    <div class="input-group-append">
+                      <div class="input-group-text">
+                        <span class="fas fa-envelope"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="input-group mb-3">
+                    <input type="password" class="form-control" placeholder="Password" name="password" required>
+                    <div class="input-group-append">
+                      <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                    </div>
+                    <!-- /.col -->
+                  </div>
+                </form>
+
+
+                <!--       <p class="mb-1"> -->
+                <!--         <a href="forgot-password.html">I forgot my password</a> -->
+                <!--       </p> -->
+                <p class="mb-0">
+                  <a th:href="@{/organiser/register}" class="text-center">Register a new membership</a>
+                </p>
+              </div>
+              <!-- /.login-card-body -->
+            </div>
           </div>
-          <!-- /.col -->
         </div>
-      </form>
-
-
-<!--       <p class="mb-1"> -->
-<!--         <a href="forgot-password.html">I forgot my password</a> -->
-<!--       </p> -->
-      <p class="mb-0">
-        <a th:href="@{/organiser/register}" class="text-center">Register a new membership</a>
-      </p>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
     </div>
-    <!-- /.login-card-body -->
   </div>
+  <!-- /.content-wrapper -->
+  <div th:replace="fragments/footer :: footer"></div>
 </div>
-<!-- /.login-box -->
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
 
 <!-- jQuery -->
-<script src="/webjars/AdminLTE/plugins/jquery/jquery.min.js"></script>
+<script src="/webjars/AdminLTE/3.0.0/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
-<script src="/webjars/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/webjars/AdminLTE/3.0.0/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
-<script src="/webjars/AdminLTE/dist/js/adminlte.min.js"></script>
-
+<script src="/webjars/AdminLTE/3.0.0/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/webjars/AdminLTE/3.0.0/dist/js/demo.js"></script>
 </body>
 </html>

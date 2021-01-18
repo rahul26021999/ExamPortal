@@ -17,18 +17,46 @@
 
     <div th:replace="fragments/header :: header"></div>
 
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Main content -->
+    <style>
+        .main-bg{
+            background-image: url("https://cache.careers360.mobi/media/presets/860X430/article_images/2020/11/2/RMAT-2021.jpg");
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Do not repeat the image */
+            background-size: cover;
+            position: relative;/* Resize the background image to cover the entire container */
+        }
+        .mycard{
+            margin-top: 30%;
+            background-color: rgb(255,255,255,0.9);
+        }
+    </style>
+    <div class="content-wrapper main-bg">
         <div class="content">
             <div class="container">
                 <div class="row">
-
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-4">
+                        <div class="card mycard">
+                            <div class="card-header text-center">
+                                <div class="text-primary text-bold" style="font-size: 18px;">Go to Exam Login Page</div>
+                            </div>
+                            <div class="card-body">
+                                <form th:action="@{/goto/exam}" method="post">
+                                    <div class="form-group">
+                                        <p class="text-center">Your Exam Code </p>
+                                        <input type="text" name="examcode" class="form-control" placeholder="eg. Exam-23" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="submit" value="Go" class="w-100 btn btn-primary d-block">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
-        <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
     <div th:replace="fragments/footer :: footer"></div>

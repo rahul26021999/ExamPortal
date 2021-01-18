@@ -7,90 +7,119 @@
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Font Awesome -->
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="/webjars/AdminLTE/3.0.0/plugins/fontawesome-free/css/all.min.css">
-    <!-- icheck bootstrap -->
-    <link rel="stylesheet" href="/webjars/AdminLTE/3.0.0/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="/webjars/AdminLTE/3.0.0/dist/css/adminlte.min.css">
 </head>
-<body class="hold-transition login-page">
-<div class="login-box">
+<body class="hold-transition layout-top-nav">
+<div class="wrapper">
 
-    <div th:switch="${ param.error==null ? 0 : param.error.get(0) }">
-        <div th:case="'3'" class="alert alert-success alert-dismissible fade show" role="alert">
-            You have Already Submitted Exam
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div th:case="'2'" class="alert alert-warning alert-dismissible fade show" role="alert">
-            Invalid email and password
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div th:case="'4'" class="alert alert-warning alert-dismissible fade show" role="alert">
-            You can login only before 15 mins before exam start time
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div th:case="'5'" class="alert alert-warning alert-dismissible fade show" role="alert">
-            You can login only till 30 mins after exam start time
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div th:case="'0'">
-        </div>
-        <div th:case="*" class="alert alert-danger alert-dismissible fade show" role="alert">
-            Something Went Wrong
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </div>
+    <div th:replace="fragments/header :: header"></div>
 
-    <div class="card card-outline card-primary">
-        <div class="card-header text-center">
-            <a th:href="@{/}" class="h3"><b>JNU</b> E-Portal</a>
-            <h5 class="text-danger mt-3" th:text="${exam.getTitle()}"></h5>
-        </div>
-        <div class="card-body">
-            <p class="login-box-msg">Sign in to go to Exam Screen</p>
-            <form th:action="@{'/'+ ${exam.getExamCode()} +'/login'}" method="post">
-                <div class="input-group mb-3">
-                    <input type="email" class="form-control" placeholder="Email" name="email">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="Password" name="password">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
-                        </div>
-                    </div>
-                </div>
+    <style>
+        .main-bg{
+            background-image: url("https://cache.careers360.mobi/media/presets/860X430/article_images/2020/11/2/RMAT-2021.jpg");
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Do not repeat the image */
+            background-size: cover;
+            position: relative;/* Resize the background image to cover the entire container */
+        }
+        .mycard{
+            margin-top: 100px;
+            background-color: rgb(255,255,255,0.9);
+        }
+    </style>
+    <div class="content-wrapper main-bg">
+        <div class="content">
+            <div class="container">
                 <div class="row">
-                    <!-- /.col -->
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-                    </div>
-                    <!-- /.col -->
-                </div>
-            </form>
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-4">
+                        <div th:switch="${ param.error==null ? 0 : param.error.get(0)}" class="mt-2">
+                            <div th:case="'3'" class="alert alert-success alert-dismissible fade show" role="alert">
+                                You have Already Submitted Exam
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div th:case="'1'" class="alert alert-danger alert-dismissible fade show" role="alert">
+                                Invalid Email or password
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div th:case="'4'" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                You can login only before 15 mins before exam start time
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div th:case="'5'" class="alert alert-warning alert-dismissible fade show" role="alert">
+                                You can login only till 30 mins after exam start time
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div th:case="'0'">
+                            </div>
+                            <div th:case="*" class="alert alert-danger alert-dismissible fade show" role="alert">
+                                Something Went Wrong
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
 
+                        <div class="card card-outline card-primary mycard">
+                            <div class="card-header text-center">
+                                <div class="text-danger text-bold" style="font-size: 18px;" th:text="${exam.getTitle()}"></div>
+                            </div>
+                            <div class="card-body">
+                                <p class="login-box-msg">Sign in to go to Exam Screen</p>
+                                <form th:action="@{'/'+ ${exam.getExamCode()} +'/login'}" method="post" autocomplete="off">
+                                    <div class="input-group mb-3">
+                                        <input type="email" class="form-control" placeholder="Email" name="email">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-envelope"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <input type="password" class="form-control" placeholder="Password" name="password">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-lock"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <!-- /.col -->
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                                        </div>
+                                        <!-- /.col -->
+                                    </div>
+                                </form>
+
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                    </div>
+
+                    <!-- /.card -->
+                </div>
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
         </div>
-        <!-- /.card-body -->
     </div>
-    <!-- /.card -->
+    <!-- /.content-wrapper -->
+    <div th:replace="fragments/footer :: footer"></div>
 </div>
-<!-- /.login-box -->
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
 
 <!-- jQuery -->
 <script src="/webjars/AdminLTE/3.0.0/plugins/jquery/jquery.min.js"></script>
@@ -98,5 +127,7 @@
 <script src="/webjars/AdminLTE/3.0.0/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/webjars/AdminLTE/3.0.0/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/webjars/AdminLTE/3.0.0/dist/js/demo.js"></script>
 </body>
 </html>
