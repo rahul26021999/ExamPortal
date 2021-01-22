@@ -1,7 +1,9 @@
-# ExamPortal
+# Exam Portal - JNU E-Portal
+
+A java Spring Boot Project 
 
 ### How to Setup
-import Database in Mysql  (exam_portal.sql)
+Import Database in Mysql  (exam_portal.sql)
 
 Login with Already Registered organiser for Demo / Or Create New Organiser  
 
@@ -30,7 +32,15 @@ Password : password
 ### List Exam Screen 
 
 ![Screenshot from 2021-01-22 23-48-34](https://user-images.githubusercontent.com/35486010/105529905-1ac4df80-5d0d-11eb-87ff-f08b6de945d4.png)
+
+### View Exam Screen 
 ![Screenshot_2021-01-22 Exam Organiser](https://user-images.githubusercontent.com/35486010/105530090-5495e600-5d0d-11eb-82b9-510acc1096dd.png)
+
+### Exam Screen 
 ![Screenshot from 2021-01-22 23-47-48](https://user-images.githubusercontent.com/35486010/105529923-20bac080-5d0d-11eb-97a7-ee5a4cfabc48.png)
+
+### Result Page For User
 ![Screenshot from 2021-01-22 23-48-24](https://user-images.githubusercontent.com/35486010/105529941-287a6500-5d0d-11eb-95b3-80c19615645d.png)
+
+### Organiser View Result Page
 ![Screenshot from 2021-01-22 23-48-46](https://user-images.githubusercontent.com/35486010/105529953-2e704600-5d0d-11eb-9b5e-c1e7743feff5.png)
