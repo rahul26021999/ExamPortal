@@ -2,19 +2,25 @@ package com.exam.portal.Controller;
 
 import com.exam.portal.Model.*;
 import com.exam.portal.Repository.*;
+import com.exam.portal.Utils.CSVHelper;
 import com.exam.portal.Utils.RandomString;
+import com.exam.portal.Utils.ResponseMessage;
 import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.*;
 
 @Controller
@@ -38,6 +44,51 @@ public class UserController {
 
     @Autowired
     OptionRepository optionRepository;
+
+    public void saveCSVFile(MultipartFile file, Long exam_id) {
+        try {
+            List<User> users = CSVHelper.csvToUsers(file.getInputStream());
+            for (User u: users) {
+                System.out.println("User --- "+u);
+                Exam exam=examRepository.findById(exam_id).get();
+                User user=userRepo.findByEmail(u.getEmail());
+                if(user==null){
+                    user=new User(u.getEmail(), u.getName());
+                }else{
+                    user.setName(u.getName());
+                }
+                userRepo.save(user);
+                String password= RandomString.getAlphaNumericString(8);
+                UserExam userExam=new UserExam(user,exam,password);
+                userExamRepository.save(userExam);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("fail to store csv data: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/user/csv/upload")
+    public String uploadFile(@RequestParam("file") MultipartFile file, @RequestParam(name = "exam_id")Long exam_id, RedirectAttributes redirectAttributes) {
+        String message = "";
+
+        if (CSVHelper.hasCSVFormat(file)) {
+            try {
+                saveCSVFile(file,exam_id);
+                message = "Uploaded the file successfully: " + file.getOriginalFilename();
+                redirectAttributes.addFlashAttribute("success_message", message);
+                ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+            } catch (Exception e) {
+                message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+                redirectAttributes.addFlashAttribute("error_message", message);
+                ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+            }
+        } else {
+            message = "Please upload a csv file!";
+            redirectAttributes.addFlashAttribute("error_message", message);
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
+        }
+        return "redirect:/organiser/exams/view?id="+exam_id;
+    }
 
     @PostMapping("/organiser/user/add")
     public String addUser(@RequestParam(name = "exam_id")Long exam_id,@RequestParam(name="name")String name,@RequestParam(name="email")String email){

@@ -12,14 +12,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.mail.MailException;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.context.IContext;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +35,9 @@ import java.util.Optional;
 public class ExamController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExamController.class);
+
+    @Autowired
+    private JavaMailSender javaMailSender;
 
     @Autowired
     ExamRepository repo;
@@ -120,5 +130,48 @@ public class ExamController {
         model.addAttribute("score",score);
 
         return "organiser/result/list";
+    }
+
+    @GetMapping("/organiser/exam/mail")
+    public String sendEmail(@RequestParam(name = "id",required = true ) Long id, RedirectAttributes redirectAttributes) throws MessagingException {
+
+        MimeMessage msg = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(msg, true);
+
+        Exam exam=repo.findById(id).get();
+        List<UserExam> examUsers=exam.getUserExam();
+
+        for (UserExam userExam:examUsers) {
+
+            SimpleDateFormat formatter = new SimpleDateFormat("E, dd MMM yyyy, hh:mm:ss a");
+            String strDate = formatter.format(exam.getStartDate());
+            String user_name = userExam.getUser().getName();
+            String user_email = userExam.getUser().getEmail();
+            String user_pass = userExam.getPassword();
+            String exam_code = exam.getExamCode();
+            String exam_duration = exam.getExamTime()+" Minutes";
+            String exam_title = exam.getTitle();
+
+            helper.setTo(user_email);
+            helper.setSubject("Login Credentials for "+ exam_title +" Examination");
+
+            helper.setText("Dear <b>"+ user_name +"</b>,"
+                            +"<br><br>Critical information for taking the Online <b>"+exam_title+"</b> Examination "
+                            +"<br>Login User Id : "+ user_email
+                            +"<br>User Password : " + user_pass
+                            +"<br>Subject Code : " + exam_code
+                            +"<br>Date and Time of exam : " + strDate
+                            +"<br><br><b> Please note duration of exam will be "+ exam_duration +"</b> and you can only login 15 minutes prior to the exam and only till 30 minutes post start of the exam."
+                    ,true);
+            try {
+                javaMailSender.send(msg);
+
+            } catch (MailException e) {
+
+            }
+            System.out.println("Mail Sent to : "+user_email);
+        }
+        redirectAttributes.addFlashAttribute("success_message","Mail Sent Successfully");
+        return "redirect:/organiser/exams/view?id="+id;
     }
 }
